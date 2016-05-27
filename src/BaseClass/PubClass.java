@@ -52,7 +52,6 @@ public class PubClass {
 			new WebDriverWait(driver, timeout).until(ExpectedConditions.presenceOfElementLocated(by));
 			return true;
 		}catch(Exception e){
-			e.printStackTrace();
 			return false;
 		}
 		

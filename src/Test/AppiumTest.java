@@ -44,8 +44,8 @@ public class AppiumTest{
 	public void Test() throws InterruptedException, ParseException{
 		System.out.println("------------------start  test.");
 		basefunc.enterApp();	
-		
-		dubbing.testCaseTwo();
+		//	dubbing.testCase02();
+		dubbing.testCase03(20);
 //		Assert.assertTrue(driver.findElement(By.name("»»√≈")).isDisplayed());
 //		System.out.println(df.format(new Date()));
 	}

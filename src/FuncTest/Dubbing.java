@@ -4,6 +4,7 @@ import java.text.ParseException;
 
 import BaseClass.BaseFunc;
 import BaseClass.DubbingPage;
+import BaseClass.UploadPage;
 import BaseClass.VideoDetailPage;
 import ObjectFactory.DriverFactory;
 import io.appium.java_client.android.AndroidDriver;
@@ -13,11 +14,13 @@ public class Dubbing {
 	public BaseFunc basefunc = null;
 	public VideoDetailPage videodetailpage = null;
 	public DubbingPage dubbingpage= null;
+	public UploadPage uploadpage = null;
 	
 	public Dubbing(AndroidDriver driver){
 		basefunc = new BaseFunc(driver);
 		videodetailpage = new VideoDetailPage(driver);
 		dubbingpage = new DubbingPage(driver);
+		uploadpage = new UploadPage(driver);
 	}
 	
 	
@@ -28,7 +31,7 @@ public class Dubbing {
 	 * @throws InterruptedException
 	 * @throws ParseException
 	 */
-	public void testCaseOne() throws InterruptedException, ParseException{
+	public void testCase01() throws InterruptedException, ParseException{
 		basefunc.enterFeature("频道");
 		basefunc.enterChannel("动漫");
 		basefunc.enterVideoDetail();
@@ -46,14 +49,40 @@ public class Dubbing {
 	 * @throws InterruptedException
 	 * @throws ParseException
 	 */
-	public void testCaseTwo() throws InterruptedException, ParseException{
+	public void testCase02() throws InterruptedException, ParseException{
 		basefunc.enterFeature("频道");
 		basefunc.enterChannel("动漫");
 		basefunc.enterVideoDetail();
 		videodetailpage.Dubbing();
-		dubbingpage.DubbingSet(1, 1);
+		dubbingpage.DubbingSet(0, 0);
 		dubbingpage.EnterViewPage(0);//配音时长可以控制,0表示录完
 		dubbingpage.vol();
 		dubbingpage.fx();
+		dubbingpage.enterUploadPage(1);
+		uploadpage.SaveToDraft(0);
+	}
+	
+	/**
+	 * 循环配音
+	 * 从首页的快速配音进入配音界面
+	 * 直接普通配音
+	 * 配音人声音量调整到200，特效调整到50%
+	 * 保存草稿箱后选择“再配一次”
+	 * @throws ParseException
+	 * @throws InterruptedException
+	 * @param times 循环配音次数
+	 */
+	public void testCase03(int times) throws ParseException, InterruptedException{
+		System.out.println("testCase03");
+		basefunc.enterQuickDubbing();
+		for (int i = 1; i <= times; i++) {
+			System.out.println("No. " + i);
+			dubbingpage.DubbingSet(1, 0);
+			dubbingpage.EnterViewPage(0);// 配音时长可以控制,0表示录完
+			dubbingpage.vol();
+			dubbingpage.fx();
+			dubbingpage.enterUploadPage(1);
+			uploadpage.SaveToDraft(0);
+		}
 	}
 }

@@ -3,11 +3,14 @@ package BaseClass;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
+
+import Util.SystemHelper;
 
 
 import io.appium.java_client.android.AndroidDriver;
@@ -19,6 +22,7 @@ public class DubbingPage {
 	public AndroidDriver driver;
 	public PubClass pub = null;
 	public BaseFunc basefunc = null;
+	public int guidetype = 0;
 	
 	//	配音界面	
 	By by_back = null;
@@ -100,11 +104,7 @@ public class DubbingPage {
 		switch (set) {
 		case 1:
 			if(!headset.isSelected()){
-				headset.click();
-				By by_sub = By.id("com.happyteam.dubbingshow:id/btnSubmit");				
-				if(pub.isElementExist(by_sub)){
-					driver.findElement(by_sub).click();
-				}
+				headset.click();				
 			}
 			break;
 		case 0:
@@ -143,9 +143,7 @@ public class DubbingPage {
 		default:
 			break;
 		}
-	}
-	
-	
+	}	
 	
 	/*
 	 * 完成进入预览界面
@@ -155,15 +153,18 @@ public class DubbingPage {
 	public void EnterViewPage(int dubbing_time) throws ParseException, InterruptedException{
 		int video_time_int = 0;//素材时长转换成按秒计	
 		String video_time,time1,time2 = null;
-		
-		System.out.println("-----------EnterViewPage.");
-		System.out.println(dubbing_time);
-		
-		WebElement dubbing_btn = driver.findElement(by_dubbing);
+
 		WebElement complete_btn = null;
 		WebElement endconfirm_btn = null;
-		dubbing_btn.click();
+		System.out.println("-----------EnterViewPage.");
 
+		List<WebElement> dubbing_btn = driver.findElements(by_dubbing);
+		if(dubbing_btn.size() > 1){	//快速配音页面特殊处理
+			 dubbing_btn.get(1).click();
+		}else{
+			dubbing_btn.get(0).click();
+		}
+		
 		video_time = driver.findElement(by_video_time).getText();
 
 		time1 = video_time.substring(6,8);
@@ -171,8 +172,6 @@ public class DubbingPage {
 		video_time_int = Integer.parseInt(time1)*60000 + Integer.parseInt(time2)*1000;
 
 		System.out.println("video_time_int: " + video_time_int);
-		
-		System.out.println("完成计算"+df.format(new Date()));
 		
 		Thread.sleep(3000);
 
@@ -189,15 +188,11 @@ public class DubbingPage {
 			}
 			
 		}else if(dubbing_time < 8000){
-			
-			System.out.println(1);
-	
 			Thread.sleep(dubbing_time);
 			//自动点击完成按钮等待合成
 			System.out.println(df.format(new Date()));
 
 		}else if(dubbing_time >= video_time_int){
-			System.out.println(11);
 			Thread.sleep(dubbing_time );
 			complete_btn = driver.findElement(by_complete);
 			System.out.println(df.format(new Date()));
@@ -206,13 +201,18 @@ public class DubbingPage {
 				endconfirm_btn = driver.findElement(by_endconfirm);
 				endconfirm_btn.click();	
 			}
-
 		}
-			pub.isElementExist(by_review_title,30000);
-			WebElement guide = driver.findElement(by_guide);
-			guide.click();
-			System.out.println("enter yulan");		
-		
+		pub.isElementExist(by_review_title,30000);
+		System.out.println("guidetype = " + guidetype);
+		if(guidetype == 0){
+			if (pub.isElementExist(by_guide, 1)) {
+				WebElement guide = driver.findElement(by_guide);
+				guide.click();
+			}	
+			guidetype = 1;
+		}
+	
+		System.out.println("enter yulan");			
 	}
 	
 	/**
@@ -251,9 +251,14 @@ public class DubbingPage {
 	public void enterUploadPage(int type){
 		WebElement complete = driver.findElement(by_complete);
 		complete.click();
-		basefunc.LoginCheck();
+		//basefunc.LoginCheck();
 		if(type == 1){
 			//通过判断上传页面字段，确定是否进入上传界面
+			if(pub.isElementExist(By.name("上传作品"),600000)){
+				SystemHelper.sleep(2);
+			}else{
+				System.out.println("enter uploadpage failed.");
+			}
 		}
 		
 	}

@@ -20,6 +20,7 @@ public class BaseFunc {
 	
 	By by_quickdubbing = null;
 	By by_view = null;
+	public int guidetype = 0;
 
 
 	public BaseFunc(AndroidDriver driver){
@@ -44,10 +45,15 @@ public class BaseFunc {
 			pub.swipeToLeft(500);//多滑几下，保险
 			driver.findElement(By.id("com.happyteam.dubbingshow:id/go")).click();
 		}
-		By by_name = By.name("下次更新");
-		if(pub.isElementExist(by_name)){
-			driver.findElement(by_name).click();
+		
+		if(guidetype == 0){
+			if(pub.isElementExist(By.name("下次更新"),3)){
+				System.out.println("deal with updata...");
+				driver.findElement(By.name("下次更新")).click();			
+			}
+			guidetype = 1;
 		}
+
 		WebElement mark = driver.findElementByName("热门");
 		mark.click();
 		Thread.sleep(2000);
@@ -80,7 +86,7 @@ public class BaseFunc {
 		quickbtn.click();
 		if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/action"),600000)){
 			SystemHelper.sleep(2);
-			pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]/2);
+			pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
 		}else{
 			System.out.println("enter dubbing failed.");
 		}	

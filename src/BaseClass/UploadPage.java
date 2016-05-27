@@ -7,6 +7,9 @@ package BaseClass;
 import java.text.SimpleDateFormat;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import Util.SystemHelper;
 
 import io.appium.java_client.android.AndroidDriver;
 
@@ -39,9 +42,9 @@ public class UploadPage {
 		pub = new PubClass(driver);
 		
 		by_backbtn = By.id("com.happyteam.dubbingshow:id/btnBack");
-		by_saveToDraft = By.id("");
-		by_title = By.id("");
-		by_pri_switch_tv = By.id("");
+		by_saveToDraft = By.id("com.happyteam.dubbingshow:id/saveToDraft");
+		by_title = By.id("com.happyteam.dubbingshow:id/title");
+		by_pri_switch_tv = By.id("com.happyteam.dubbingshow:id/pri_switch_tv");
 		by_funny = By.id("com.happyteam.dubbingshow:id/funny");	//恶搞
 		by_imitation = By.id("com.happyteam.dubbingshow:id/imitation");	//模仿
 		by_japan = By.id("com.happyteam.dubbingshow:id/japan");	//日语
@@ -55,7 +58,30 @@ public class UploadPage {
 		by_uploadbtn = By.id("com.happyteam.dubbingshow:id/uploadbtn");	//上次作品
 		by_btnCancel = By.id("com.happyteam.dubbingshow:id/btnCancel");	//弹窗的取消按钮
 		by_btnSubmit = By.id("com.happyteam.dubbingshow:id/btnSubmit");	//弹窗的确定按钮
-		by_btnSubmit = By.id("");
+		//by_btnSubmit = By.id("");
 		
 	}
+	
+	/**
+	 * 
+	 * @param again 是否再次配音0否，1是
+	 */
+	public void SaveToDraft(int again){
+		WebElement savetodraft = driver.findElement(by_saveToDraft);
+		savetodraft.click();
+		if(again == 0){
+			WebElement submit = driver.findElement(by_btnSubmit);
+			submit.click();
+			
+			if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/action"),600000)){
+				SystemHelper.sleep(2);				
+			}else{
+				System.out.println("enter dubbing failed.");
+			}
+		}else {
+			WebElement cancel = driver.findElement(by_btnCancel);
+			cancel.click();
+		}
+	}
+	
 }
