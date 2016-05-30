@@ -58,7 +58,7 @@ public class Dubbing {
 		dubbingpage.EnterViewPage(0);//配音时长可以控制,0表示录完
 		dubbingpage.vol();
 		dubbingpage.fx();
-		dubbingpage.enterUploadPage(1);
+		dubbingpage.enterUploadPage();
 		uploadpage.SaveToDraft(0);
 	}
 	
@@ -78,7 +78,7 @@ public class Dubbing {
 		for (int i = 1; i <= times; i++) {
 			System.out.println("No. " + i);
 			dubbingpage.DubbingSet(1, 0);
-			dubbingpage.EnterViewPage(0);// 配音时长可以控制,0表示录完
+			dubbingpage.EnterViewPage(8000);// 配音时长可以控制,0表示录完
 			dubbingpage.vol();
 			dubbingpage.fx();
 			dubbingpage.enterUploadPage(1);

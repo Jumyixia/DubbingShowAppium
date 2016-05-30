@@ -2,16 +2,19 @@ package BaseClass;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.gargoylesoftware.htmlunit.javascript.host.media.rtc.webkitRTCPeerConnection;
+import com.thoughtworks.selenium.Wait;
 
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
@@ -56,7 +59,23 @@ public class PubClass {
 		}
 		
 	}
-
+	
+	/**
+	 * 等待某个元素出现，如果没有出现则等待“time”秒
+	 * @param by
+	 * @param time
+	 * @return
+	 */
+	public boolean isByElementDisplayed(By by, int time) {
+	    boolean status = false;
+	    if (driver.findElement(by).isDisplayed() == false) {
+	        driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
+	    } else {
+	        status = true;
+	    }
+	    return status;
+	}
+		
 	public void tab(int i, int j) {
 		try{
 			TouchAction ta = new TouchAction(this.driver);

@@ -66,7 +66,8 @@ public class DriverFactory {
 		String port = null;
 		if (appiumDriver == null) {
 			System.out.println("judge os");
-			String cmdPath = "E:/AndroidFiles/Appium/node_modules/.bin/appium.cmd -p 4723";
+			//String cmdPath = "E:/AndroidFiles/Appium/node_modules/.bin/appium.cmd -p 4723";
+			String cmdPath = "E:/AndroidFile/Appium/node_modules/.bin/appium.cmd -p 4723";
 			try {
 				Runtime.getRuntime().exec("cmd /c start " + cmdPath);
 			} catch (IOException e1) {

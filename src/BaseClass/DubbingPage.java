@@ -23,6 +23,7 @@ public class DubbingPage {
 	public PubClass pub = null;
 	public BaseFunc basefunc = null;
 	public int guidetype = 0;
+	public int roletype = 0; //记录当前进行的是单配合适合作配音
 	
 	//	配音界面	
 	By by_back = null;
@@ -32,12 +33,16 @@ public class DubbingPage {
 	By by_script_container = null;
 	By by_scirpt_count = null;
 	By by_coopera = null; 
+	By by_role1 = null;
+	By by_role2 = null;
+	By by_roleall = null;
 	By by_play = null;
 	By by_video_time = null;
 	By by_complete = null;
 	By by_endconfirm = null;
 	//  预览界面
 	By by_review_title = null;
+	By by_playbtn = null;
 	By by_dubbingSeekbar = null;
 	By by_fx = null;
 	By by_mix = null;
@@ -60,12 +65,16 @@ public class DubbingPage {
 		by_script_container = By.id("com.happyteam.dubbingshow:id/script_container");	//台词
 		by_scirpt_count = By.id("com.happyteam.dubbingshow:id/scirpt_count");	//台词数据
 		by_coopera = By.id("com.happyteam.dubbingshow:id/coopera");	//合作
+		by_role1 = By.id("com.happyteam.dubbingshow:id/role1_tv");	//合作第一个角色
+		by_role2 = By.id("com.happyteam.dubbingshow:id/role2_tv");	//合作第二个角色
+		by_roleall = By.id("com.happyteam.dubbingshow:id/roleall");
 		by_play = By.id("com.happyteam.dubbingshow:id/play");	//原声播放
 		by_video_time = By.id("com.happyteam.dubbingshow:id/video_time");	//视频时长
 		by_complete = By.id("com.happyteam.dubbingshow:id/complete");	//完成按钮
 		by_endconfirm = By.id("com.happyteam.dubbingshow:id/btnSubmit"); 	// 点击完成按钮时，弹出询问弹窗的确定按钮
 		//界面按钮初始化--预览界面
 		by_review_title = By.name("预览");
+		by_playbtn = By.id("com.happyteam.dubbingshow:id/play_button");	//预览播放按钮
 		by_guide  = By.id("com.happyteam.dubbingshow:id/btnGuideFixStart");
 		by_dubbingSeekbar = By.id("com.happyteam.dubbingshow:id/dubbingSeekbar"); //人声音量调整区域
 		by_vol = By.id("com.happyteam.dubbingshow:id/vol"); 	//人声音量
@@ -145,6 +154,33 @@ public class DubbingPage {
 		}
 	}	
 	
+	/**
+	 * 设置合作
+	 * @param set 0表示不合作或全部角色，1为第一个角色，2为配第二个角色
+	 */
+	public void Coopera(int set){
+		WebElement cooperabtn = null;
+		cooperabtn = driver.findElement(by_coopera);
+		if(set == 1){			
+			WebElement role1 = null;
+			cooperabtn.click();
+			role1 = driver.findElement(by_role1);
+			role1.click();
+			roletype = 1; //设置当前配音为发起合作配音
+		}else if(set == 2){
+			WebElement role2 = null;
+			cooperabtn.click();
+			role2 = driver.findElement(by_role1);
+			role2.click();
+			roletype = 1;//设置当前配音为发起合作配音
+		}else if(set == 3){
+			cooperabtn.click();
+			WebElement roleall = null;
+			roleall = driver.findElement(by_role2);
+			roleall.click();
+		}
+	}
+	
 	/*
 	 * 完成进入预览界面
 	 * dubbing_time: <8000 || >=素材时长 则直接等配音结束直接自动跳转到配音页面
@@ -212,7 +248,17 @@ public class DubbingPage {
 			guidetype = 1;
 		}
 	
+		this.view();
 		System.out.println("enter yulan");			
+	}
+	
+	
+	/**
+	 * 在预览界面点击播放按钮，播放视频
+	 */
+	public void view(){
+		WebElement playbtn = driver.findElement(by_playbtn);
+		playbtn.click();
 	}
 	
 	/**
@@ -262,6 +308,32 @@ public class DubbingPage {
 		}
 		
 	}
-		
+	
+	/**
+	 * 配音预览界面点击完成
+	 * @param type 1单配/合作完成  2发起合作 3离线
+	 */
+	public void enterUploadPage(){
+		LoginCheck();
+		// 通过判断上传页面字段，确定是否进入上传界面
+		if (pub.isElementExist(By.name("上传作品"), 600000)) {
+			SystemHelper.sleep(2);
+		} else {
+			System.out.println("enter uploadpage failed.");
+		}
+	}
+	
+	/**
+	 * 在点击完成按钮后，通过判断是否出现登录弹窗，确定是否需要登录
+	 */
+	public void LoginCheck(){
+		WebElement complete = driver.findElement(by_complete);
+		complete.click();
+		while(pub.isElementExist(By.name("登录"),2)){
+			//进行登录操作
+			pub.tab(570, 1278);
+			complete.click();
+		}
+	}
 		
 }

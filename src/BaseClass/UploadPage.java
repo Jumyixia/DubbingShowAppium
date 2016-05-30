@@ -72,7 +72,6 @@ public class UploadPage {
 		if(again == 0){
 			WebElement submit = driver.findElement(by_btnSubmit);
 			submit.click();
-			
 			if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/action"),600000)){
 				SystemHelper.sleep(2);				
 			}else{
@@ -81,6 +80,30 @@ public class UploadPage {
 		}else {
 			WebElement cancel = driver.findElement(by_btnCancel);
 			cancel.click();
+		}
+	}
+	
+	/**
+	 * 保存到本地
+	 */
+	public void SaveToLocal(){
+		WebElement savebtn = driver.findElement(by_savebtn);
+		savebtn.click();
+		if(pub.isElementExist(by_btnSubmit, 600000)){
+			WebElement submit = driver.findElement(by_btnSubmit);
+			submit.click();
+		}		
+	}
+	
+	/**
+	 * 上传，暂未考虑网络情况
+	 */
+	public void Upload(){
+		WebElement uploadbtn = driver.findElement(by_uploadbtn);
+		uploadbtn.click();
+		if(pub.isElementExist(by_btnSubmit, 600000)){
+			WebElement submit = driver.findElement(by_btnSubmit);
+			submit.click();
 		}
 	}
 	
