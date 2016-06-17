@@ -1,11 +1,13 @@
 package Test;
 
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 
 import BaseClass.BaseFunc;
@@ -15,7 +17,6 @@ import FuncTest.Dubbing;
 import ObjectFactory.DriverFactory;
 import Util.SystemHelper;
 import io.appium.java_client.android.AndroidDriver;
-
 
 public class AppiumTest{
 	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
@@ -32,20 +33,18 @@ public class AppiumTest{
 		System.out.println("start.");
 
 		driver = driverfactory.getAppiumDriver();
-		basefunc = new BaseFunc(driver);
-		videodetailpage = new VideoDetailPage(driver);
-		dubbingpage = new DubbingPage(driver);
-		dubbing = new Dubbing(driver);
+		basefunc = new BaseFunc(driver,0);
+		dubbing = new Dubbing(driver,0);		
 		//mem.content = "deleteshiping";
 		//mem.start();//开始读取手机的cpu和内存	
 	}	
 	
-	@Test
-	public void Test() throws InterruptedException, ParseException{
+	@Test()
+	public void Test() throws InterruptedException, ParseException, IOException{
 		System.out.println("------------------start  test.");
 		basefunc.enterApp();	
-		//	dubbing.testCase02();
-		dubbing.testCase03(20);
+	
+		dubbing.testCase04(20);
 //		Assert.assertTrue(driver.findElement(By.name("热门")).isDisplayed());
 //		System.out.println(df.format(new Date()));
 	}

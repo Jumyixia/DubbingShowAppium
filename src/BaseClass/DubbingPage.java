@@ -21,9 +21,9 @@ public class DubbingPage {
 	
 	public AndroidDriver driver;
 	public PubClass pub = null;
-	public BaseFunc basefunc = null;
-	public int guidetype = 0;
+	public BaseFunc basefunc = null;	
 	public int roletype = 0; //记录当前进行的是单配合适合作配音
+	public int guidetype = 1; //提示tips是否存在1为存在，0不存在
 	
 	//	配音界面	
 	By by_back = null;
@@ -39,7 +39,8 @@ public class DubbingPage {
 	By by_play = null;
 	By by_video_time = null;
 	By by_complete = null;
-	By by_endconfirm = null;
+	By by_btnSubmit = null;
+	By by_btnCancel = null;
 	//  预览界面
 	By by_review_title = null;
 	By by_playbtn = null;
@@ -53,9 +54,12 @@ public class DubbingPage {
 	By by_bgvol = null;
 	By by_guide = null;
 	
-	public DubbingPage(AndroidDriver driver){
+	By by_btnback = null;
+	
+	public DubbingPage(AndroidDriver driver, int guidetype){
 		this.driver = driver;
 		pub = new PubClass(driver);
+		this.guidetype = guidetype;
 		
 		//界面按钮初始化--配音界面
 		by_back = By.id("com.happyteam.dubbingshow:id/back");		//返回
@@ -71,7 +75,8 @@ public class DubbingPage {
 		by_play = By.id("com.happyteam.dubbingshow:id/play");	//原声播放
 		by_video_time = By.id("com.happyteam.dubbingshow:id/video_time");	//视频时长
 		by_complete = By.id("com.happyteam.dubbingshow:id/complete");	//完成按钮
-		by_endconfirm = By.id("com.happyteam.dubbingshow:id/btnSubmit"); 	// 点击完成按钮时，弹出询问弹窗的确定按钮
+		by_btnSubmit = By.id("com.happyteam.dubbingshow:id/btnSubmit"); 	// 点击完成按钮时，弹出询问弹窗的确定按钮
+		by_btnCancel = By.id("com.happyteam.dubbingshow:id/btnCancel");	//弹出询问弹窗的取消按钮
 		//界面按钮初始化--预览界面
 		by_review_title = By.name("预览");
 		by_playbtn = By.id("com.happyteam.dubbingshow:id/play_button");	//预览播放按钮
@@ -86,6 +91,7 @@ public class DubbingPage {
 		by_bgfx = By.id("com.happyteam.dubbingshow:id/bgfx");
 		by_bgvol = By.id("com.happyteam.dubbingshow:id/bgvol");
 		
+		by_btnback  = By.id("com.happyteam.dubbingshow:id/btnBack");	//素材库界面的返回按钮
 	}
 
 	//配音
@@ -218,37 +224,36 @@ public class DubbingPage {
 			
 			pub.tab(890, 1650);
 		
-			if(pub.isElementExist(by_endconfirm)){//如果存在询问弹窗则点击确定按钮
-				endconfirm_btn = driver.findElement(by_endconfirm);
+			if(pub.isElementExist(by_btnSubmit)){//如果存在询问弹窗则点击确定按钮
+				endconfirm_btn = driver.findElement(by_btnSubmit);
 				endconfirm_btn.click();	
 			}
 			
 		}else if(dubbing_time < 8000){
-			Thread.sleep(dubbing_time);
+			Thread.sleep(video_time_int);
 			//自动点击完成按钮等待合成
 			System.out.println(df.format(new Date()));
 
 		}else if(dubbing_time >= video_time_int){
-			Thread.sleep(dubbing_time );
+			Thread.sleep(video_time_int );
 			complete_btn = driver.findElement(by_complete);
 			System.out.println(df.format(new Date()));
 			complete_btn.click();
-			if(pub.isElementExist(by_endconfirm)){//如果存在询问弹窗则点击确定按钮
-				endconfirm_btn = driver.findElement(by_endconfirm);
+			if(pub.isElementExist(by_btnSubmit)){//如果存在询问弹窗则点击确定按钮
+				endconfirm_btn = driver.findElement(by_btnSubmit);
 				endconfirm_btn.click();	
 			}
 		}
 		pub.isElementExist(by_review_title,30000);
 		System.out.println("guidetype = " + guidetype);
-		if(guidetype == 0){
+		if(guidetype == 1){
 			if (pub.isElementExist(by_guide, 1)) {
 				WebElement guide = driver.findElement(by_guide);
 				guide.click();
 			}	
-			guidetype = 1;
+			guidetype = 0;
 		}
-	
-		this.view();
+			
 		System.out.println("enter yulan");			
 	}
 	
@@ -272,10 +277,10 @@ public class DubbingPage {
 		WebElement mix = driver.findElement(by_mix);
 		WebElement roomsize = driver.findElement(by_roomsize);	
 		WebElement echo = driver.findElement(by_echo);
-	
-		pub.tapOnElement(mix, 10, 11, 20);
-		pub.tapOnElement(roomsize, 10, 11, 20);
-		pub.tapOnElement(echo, 5, 11, 20);
+		
+		pub.tapOnElement(mix, 10, 15, 20);
+		pub.tapOnElement(roomsize, 10, 15, 20);
+		pub.tapOnElement(echo, 5, 15, 20);
 	}
 	
 	//直接将音量调整到200
@@ -289,7 +294,7 @@ public class DubbingPage {
 	public void ViewPage(){
 		
 	}
-	
+
 	/**
 	 * 配音预览界面点击完成
 	 * @param type 1单配/合作完成  2发起合作 3离线
@@ -305,6 +310,17 @@ public class DubbingPage {
 			}else{
 				System.out.println("enter uploadpage failed.");
 			}
+		}else if(type == 3){
+			driver.findElement(by_btnSubmit).click();
+			SystemHelper.sleep(2);
+			if(pub.isElementExist(by_btnSubmit, 600000)){
+				driver.findElement(by_btnSubmit).click();
+			}
+			//返回到首页
+			driver.manage().timeouts().implicitlyWait(20,  TimeUnit.SECONDS);
+			WebElement back =  driver.findElement(by_btnback);
+			back.click();
+			
 		}
 		
 	}

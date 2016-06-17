@@ -14,6 +14,7 @@ import BaseClass.BaseFunc;
 import BaseClass.DubbingPage;
 import BaseClass.PubClass;
 import BaseClass.VideoDetailPage;
+import FuncTest.Dubbing;
 import ObjectFactory.DriverFactory;
 import io.appium.java_client.android.AndroidDriver;
 
@@ -27,15 +28,17 @@ public class test{
 	public DubbingPage dubbingpage= null;
 	public DriverFactory driverfactory = null;
 	public PubClass pub = null;
+	public Dubbing dubbing = null;
 	
 	@Before
 	public void setUp() throws Exception{
 		System.out.println("start.");
 
 		driver = driverfactory.getAppiumDriver();
-		basefunc = new BaseFunc(driver);
+		basefunc = new BaseFunc(driver,0);
+		dubbing = new Dubbing(driver,0);
 		videodetailpage = new VideoDetailPage(driver);
-		dubbingpage = new DubbingPage(driver);
+		dubbingpage = new DubbingPage(driver,0);
 		pub = new PubClass(driver);
 		//mem.content = "deleteshiping";
 		//mem.start();//开始读取手机的cpu和内存	

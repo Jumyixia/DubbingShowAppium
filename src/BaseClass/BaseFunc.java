@@ -20,15 +20,18 @@ public class BaseFunc {
 	
 	By by_quickdubbing = null;
 	By by_view = null;
-	public int guidetype = 0;
+	By by_dubbing = null;
+	public int guidetype = 1; //提示tips是否存在1为存在，0不存在
 
 
-	public BaseFunc(AndroidDriver driver){
+	public BaseFunc(AndroidDriver driver, int guidetype){
 		this.driver = driver;
-		pub = new PubClass(driver);
+		pub = new PubClass(driver);		
+		this.guidetype = guidetype;
 		
 		by_view = By.className("android.widget.ImageView");
 		by_quickdubbing = By.id("com.happyteam.dubbingshow:id/iv_fast");	//快速配音
+		by_dubbing = By.id("com.happyteam.dubbingshow:id/dubbing");	//素材库页面的配音按钮
 	}
 	
 	
@@ -46,12 +49,12 @@ public class BaseFunc {
 			driver.findElement(By.id("com.happyteam.dubbingshow:id/go")).click();
 		}
 		
-		if(guidetype == 0){
+		if(guidetype == 1){
 			if(pub.isElementExist(By.name("下次更新"),3)){
 				System.out.println("deal with updata...");
 				driver.findElement(By.name("下次更新")).click();			
 			}
-			guidetype = 1;
+			guidetype = 0;
 		}
 
 		WebElement mark = driver.findElementByName("热门");
@@ -76,23 +79,30 @@ public class BaseFunc {
 		channel_btn.click();
 	}
 	
+
 	/**
 	 * @author Jum
 	 * @throws InterruptedException
 	 * @Catalog 进入快速配音
+	 * @param type 网络情况，0为无网，1为有网
 	 */
-	public void enterQuickDubbing(){
+	public void enterQuickDubbing(int type){
 		WebElement quickbtn = driver.findElement(by_quickdubbing);
 		quickbtn.click();
-		if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/action"),600000)){
-			SystemHelper.sleep(2);
-			pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
-		}else{
-			System.out.println("enter dubbing failed.");
-		}	
+		if(type == 0){
+			WebElement dubbing = driver.findElement(by_dubbing);
+			dubbing.click();
+		}else {
+			if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/action"),600000)){
+				SystemHelper.sleep(2);
+				pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
+			}else{
+				System.out.println("enter dubbing failed.");
+			}
+		}			
 	}
 	
-	
+
 	public void enterVideoDetail() throws InterruptedException{
 		System.out.println("-----------enterVideoDetail");
 		driver.manage().timeouts().implicitlyWait(20,  TimeUnit.SECONDS);
