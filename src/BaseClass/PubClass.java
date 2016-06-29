@@ -1,7 +1,10 @@
 package BaseClass;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.codec.binary.Base64;
@@ -74,6 +77,16 @@ public class PubClass {
 	        status = true;
 	    }
 	    return status;
+	}
+	
+	public List<WebElement> findElements(By by){
+		List<WebElement> list = null;
+		try{
+			list =  driver.findElements(by);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return list;
 	}
 		
 	public void tab(int i, int j) {
@@ -232,6 +245,47 @@ public class PubClass {
         // wait for page loading
     }
 	
+    
+    /*
+	 * ------创建不存在的文件--------
+	 */
+	public boolean buildfile(String path) {
+		System.out.println("create folder !");
+		try {
+			File myFilePath = new File(path);
+			System.out.println(myFilePath.exists());
+			if (!myFilePath.exists()) {
+				
+				myFilePath.mkdirs();
+				System.out.println("create folder suc!");
+			}
+			return true;
+		} catch (Exception e) {
+			System.out.println("create folder fail!");
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/*
+	 * -------数据写入CSV文档-------------
+	 */
+	public void WriteinFile(String str1, String Filename) {		
+		try {
+			this.buildfile("/data/local/tmp/appium_tfile");
+			BufferedWriter bw = new BufferedWriter(new FileWriter("/data/local/tmp/appium_tfile/"+Filename, true));
+			bw.write(str1);
+			bw.flush();
+			bw.newLine();
+			bw.write("\r\n");
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+    
 	//push文件、pull文件
 	public void pushFile(File file){
 		String content = null;
@@ -246,8 +300,9 @@ public class PubClass {
 		
 	}
 	
-	public void pullFile(File file){
-		byte[] resultDate = driver.pullFile("sdcard/test.txt");
+	public void pullFile(String filename){
+		byte[] resultDate = driver.pullFile("/data/local/tmp/appium_tfile/" + filename);
+		
 		
 		System.out.println(new String(Base64.decodeBase64(resultDate))); //打印结果为"test"
 		

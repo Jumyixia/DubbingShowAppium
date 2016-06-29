@@ -24,6 +24,7 @@ public class DubbingPage {
 	public BaseFunc basefunc = null;	
 	public int roletype = 0; //记录当前进行的是单配合适合作配音
 	public int guidetype = 1; //提示tips是否存在1为存在，0不存在
+	public String log = null;
 	
 	//	配音界面	
 	By by_back = null;
@@ -213,7 +214,7 @@ public class DubbingPage {
 		time2 = video_time.substring(9,11);
 		video_time_int = Integer.parseInt(time1)*60000 + Integer.parseInt(time2)*1000;
 
-		System.out.println("video_time_int: " + video_time_int);
+		log =  "video_time_int ,  " + video_time_int/1000 ;
 		
 		Thread.sleep(3000);
 
@@ -232,7 +233,7 @@ public class DubbingPage {
 		}else if(dubbing_time < 8000){
 			Thread.sleep(video_time_int);
 			//自动点击完成按钮等待合成
-			System.out.println(df.format(new Date()));
+		//	System.out.println(df.format(new Date()));
 
 		}else if(dubbing_time >= video_time_int){
 			Thread.sleep(video_time_int );
@@ -245,7 +246,7 @@ public class DubbingPage {
 			}
 		}
 		pub.isElementExist(by_review_title,30000);
-		System.out.println("guidetype = " + guidetype);
+		//System.out.println("guidetype = " + guidetype);
 		if(guidetype == 1){
 			if (pub.isElementExist(by_guide, 1)) {
 				WebElement guide = driver.findElement(by_guide);
@@ -254,7 +255,7 @@ public class DubbingPage {
 			guidetype = 0;
 		}
 			
-		System.out.println("enter yulan");			
+	//	System.out.println("enter yulan");			
 	}
 	
 	
@@ -285,7 +286,7 @@ public class DubbingPage {
 	
 	//直接将音量调整到200
 	public void vol(){
-		System.out.println("-----------begin vol");
+		//System.out.println("-----------begin vol");
 		WebElement dubbingSeekbar = driver.findElement(by_dubbingSeekbar);
 		pub.swipeOnElement(dubbingSeekbar, "Down", 1000);
 		pub.swipeOnElement(dubbingSeekbar, "Down", 1000);
@@ -298,8 +299,10 @@ public class DubbingPage {
 	/**
 	 * 配音预览界面点击完成
 	 * @param type 1单配/合作完成  2发起合作 3离线
+	 * @throws ParseException 
 	 */
-	public void enterUploadPage(int type){
+	public void enterUploadPage(int type) throws ParseException{
+		long end = 0,start;
 		WebElement complete = driver.findElement(by_complete);
 		complete.click();
 		//basefunc.LoginCheck();
@@ -311,15 +314,23 @@ public class DubbingPage {
 				System.out.println("enter uploadpage failed.");
 			}
 		}else if(type == 3){
+			start = df.parse(df.format(new Date())).getTime();
 			driver.findElement(by_btnSubmit).click();
 			SystemHelper.sleep(2);
 			if(pub.isElementExist(by_btnSubmit, 600000)){
+			
 				driver.findElement(by_btnSubmit).click();
+				end = df.parse(df.format(new Date())).getTime();
 			}
+			
+			long time = end-start;
+			log = log + ",using:," + time/1000;
 			//返回到首页
 			driver.manage().timeouts().implicitlyWait(20,  TimeUnit.SECONDS);
 			WebElement back =  driver.findElement(by_btnback);
 			back.click();
+			System.out.println(log);
+			pub.WriteinFile(log, "time.txt");
 			
 		}
 		

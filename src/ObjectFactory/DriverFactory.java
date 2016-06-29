@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import Util.Console;
 import Util.SystemHelper;
 //import Listeners.MTListener;
 //import com.gorillalogic.monkeytalk.java.MonkeyTalkDriver;
@@ -18,6 +19,7 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 
 public class DriverFactory {
+	
 
 	private static Object currentDriver = null;
 	//private static MonkeyTalkDriver mtDriver;
@@ -65,7 +67,7 @@ public class DriverFactory {
 		System.out.println("getAppiumDriver");
 		String port = null;
 		if (appiumDriver == null) {
-			System.out.println("judge os");
+			System.out.println("judge os");			
 			String cmdPath = "E:/AndroidFiles/Appium/node_modules/.bin/appium.cmd -p 4723";
 			//String cmdPath = "E:/AndroidFile/Appium/node_modules/.bin/appium.cmd -p 4723";
 			try {

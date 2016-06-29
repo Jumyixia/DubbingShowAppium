@@ -63,6 +63,18 @@ public class BaseFunc {
 
 	}
 	
+	/*
+	 * 判断是否在首页，如果不是，则杀掉进程重启app
+	 */
+	public void BackToHome(){
+		WebElement quickbtn = driver.findElement(by_quickdubbing);
+		if(!quickbtn.isDisplayed()){
+			driver.closeApp();
+			driver.launchApp();
+		}
+		
+	}
+	
 	//进入首页四个模块中的一个
 	public void enterFeature(String feature){
 		System.out.println("-----------enterFeature");
@@ -83,16 +95,13 @@ public class BaseFunc {
 	/**
 	 * @author Jum
 	 * @throws InterruptedException
-	 * @Catalog 进入快速配音
+	 * @Catalog 进入快速配音,无网情况下则进入已配缓存列表即可
 	 * @param type 网络情况，0为无网，1为有网
 	 */
 	public void enterQuickDubbing(int type){
 		WebElement quickbtn = driver.findElement(by_quickdubbing);
 		quickbtn.click();
-		if(type == 0){
-			WebElement dubbing = driver.findElement(by_dubbing);
-			dubbing.click();
-		}else {
+		if(type == 1){		
 			if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/action"),600000)){
 				SystemHelper.sleep(2);
 				pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
