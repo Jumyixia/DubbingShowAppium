@@ -69,7 +69,7 @@ public class UploadPage {
 	public void SaveToDraft(int again){
 		WebElement savetodraft = driver.findElement(by_saveToDraft);
 		savetodraft.click();
-		if(again == 0){
+		if(again == 1){
 			WebElement submit = driver.findElement(by_btnSubmit);
 			submit.click();
 			if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/action"),600000)){

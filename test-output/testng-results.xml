@@ -2,20 +2,20 @@
 <testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="36278" started-at="2016-06-29T09:54:17Z" finished-at="2016-06-29T09:54:53Z">
+  <suite name="Default suite" duration-ms="38252" started-at="2016-06-29T10:10:54Z" finished-at="2016-06-29T10:11:32Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="36278" started-at="2016-06-29T09:54:17Z" finished-at="2016-06-29T09:54:53Z">
+    <test name="Default test" duration-ms="38252" started-at="2016-06-29T10:10:54Z" finished-at="2016-06-29T10:11:32Z">
       <class name="Test.AppiumTest">
-        <test-method status="PASS" signature="setUp()[pri:0, instance:Test.AppiumTest@d6466f]" name="setUp" is-config="true" duration-ms="23228" started-at="2016-06-29T17:54:17Z" finished-at="2016-06-29T17:54:40Z">
+        <test-method status="PASS" signature="setUp()[pri:0, instance:Test.AppiumTest@d6466f]" name="setUp" is-config="true" duration-ms="22865" started-at="2016-06-29T18:10:54Z" finished-at="2016-06-29T18:11:17Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method status="PASS" signature="Test1()[pri:1, instance:Test.AppiumTest@d6466f]" name="Test1" duration-ms="13026" started-at="2016-06-29T17:54:40Z" finished-at="2016-06-29T17:54:53Z">
+        <test-method status="PASS" signature="Test1()[pri:1, instance:Test.AppiumTest@d6466f]" name="Test1" duration-ms="15369" started-at="2016-06-29T18:11:17Z" finished-at="2016-06-29T18:11:32Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Test1 -->
-        <test-method status="PASS" signature="tearDown()[pri:0, instance:Test.AppiumTest@d6466f]" name="tearDown" is-config="true" duration-ms="0" started-at="2016-06-29T17:54:53Z" finished-at="2016-06-29T17:54:53Z">
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:Test.AppiumTest@d6466f]" name="tearDown" is-config="true" duration-ms="2" started-at="2016-06-29T18:11:32Z" finished-at="2016-06-29T18:11:32Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->

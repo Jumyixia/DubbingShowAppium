@@ -72,7 +72,7 @@ public class Dubbing {
 			dubbingpage.vol();
 			dubbingpage.fx();
 			dubbingpage.enterUploadPage(1);
-			uploadpage.SaveToDraft(0);
+			uploadpage.SaveToDraft(1);
 		}
 	}
 	
@@ -120,6 +120,7 @@ public class Dubbing {
 			basefunc.enterQuickDubbing(0);	
 			driver.manage().timeouts().implicitlyWait(20,  TimeUnit.SECONDS);
 			dubbinglist = driver.findElements(by_dubbingbtn);
+			WebElement DUB = driver.findElement(by_dubbingbtn);
 			dubbinglist.get(i).click();
 			dubbingpage.DubbingSet(0, 1);
 			dubbingpage.EnterViewPage(0);// 配音时长可以控制,0表示录完

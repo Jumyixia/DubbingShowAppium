@@ -84,7 +84,7 @@ public class AppiumTest{
 	public void tearDown() throws Exception{
 		System.out.println("end.");
 		//mem.stopRunning();//停止cpu获取和内存
-		//driver.quit();
+		driver.quit();
 	}
 	
 

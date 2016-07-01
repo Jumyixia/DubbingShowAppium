@@ -38,6 +38,7 @@ public class BaseFunc {
 	//½øÈëÊ×Ò³
 	public void enterApp() throws InterruptedException{
 		System.out.println("----------enterApp");
+		
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 
 		WebElement view = driver.findElement(by_view);
@@ -105,6 +106,9 @@ public class BaseFunc {
 			if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/action"),600000)){
 				SystemHelper.sleep(2);
 				pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
+				pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
+				pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
+				
 			}else{
 				System.out.println("enter dubbing failed.");
 			}

@@ -245,6 +245,8 @@ public class DubbingPage {
 				endconfirm_btn.click();	
 			}
 		}
+		//driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		//WebElement review_title = driver.findElement(by_review_title);
 		pub.isElementExist(by_review_title,30000);
 		//System.out.println("guidetype = " + guidetype);
 		if(guidetype == 1){
