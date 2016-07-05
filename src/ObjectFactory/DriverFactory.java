@@ -88,6 +88,7 @@ public class DriverFactory {
 
 		System.out.println("start capabilities");
 		// 设置参数
+		capabilities.setCapability(MobileCapabilityType.PLATFORM, "Android");
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME,"Android");
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION,"5.0.2");
 		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME,"Ju");
@@ -95,11 +96,11 @@ public class DriverFactory {
 		capabilities.setCapability(MobileCapabilityType.APP,app.getAbsolutePath());
 		capabilities.setCapability(MobileCapabilityType.APP_PACKAGE,"com.happyteam.dubbingshow");
 		capabilities.setCapability(MobileCapabilityType.APP_ACTIVITY,"com.happyteam.dubbingshow.ui.StartActivity");
-		capabilities.setCapability(MobileCapabilityType.APP_WAIT_ACTIVITY,"com.happyteam.dubbingshow.ui.StartActivity");
+		capabilities.setCapability(MobileCapabilityType.APP_WAIT_ACTIVITY,".act.home.HomeActivity");
 		capabilities.setCapability(MobileCapabilityType.APP_WAIT_PACKAGE,"com.happyteam.dubbingshow");
-		capabilities.setCapability("autoLaunch", "true");
+		capabilities.setCapability("autoLaunch", true);
 		capabilities.setCapability("noSign","noSign");
-		capabilities.setCapability("unicodeKeyboard", "true");
+		capabilities.setCapability("unicodeKeyboard", false);
 		// capabilities.setCapability("autoWebview","true");
 		capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT,"600");
 		// 不重新安装app，appium安装导致app提示恶意篡改
@@ -110,8 +111,8 @@ public class DriverFactory {
 		try {
 			System.out.println("start appiumDriver");
 			// appiumDriver = new AndroidDriver(new URL("http://127.0.0.1:"+port+"/wd/hub"), capabilities);
-			appiumDriver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-			// appiumDriver = new AndroidDriver(new URL("http://0.0.0.0:4723/wd/hub"), capabilities);
+			//appiumDriver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+			 appiumDriver = new AndroidDriver(new URL("http://0.0.0.0:4723/wd/hub"), capabilities);
 			
 			System.out.println("start ok");
 		} catch (MalformedURLException e) {
