@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
+import org.openqa.selenium.Keys;
 
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -23,6 +24,7 @@ import ObjectFactory.DriverFactory;
 import Util.SystemHelper;
 import Util.Console;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidKeyCode;
 
 public class AppiumTest{
 	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
@@ -60,11 +62,16 @@ public class AppiumTest{
 		if(!driver.currentActivity().equals(".act.home.HomeActivity")){
 		//	driver.getKeyboard().sendKeys("4");
 			System.out.println("-----------");
-			HashMap<String, Integer> keycode = new HashMap<String, Integer>();
+			driver.
+			manage().sendKeys(Keys.BACK_SPACE);
+			/*
+			 * HashMap<String, Integer> keycode = new HashMap<String, Integer>();
 			keycode.put("keycode",4);
 			driver.execute("mobile: keyevent", keycode);
+			 */
 			System.out.println(driver.currentActivity());
-		
+
+			//sendKeyEvent(AndroidKeyCode.HOME);
 		}
 		
 		SystemHelper.sleep(5);
@@ -90,6 +97,7 @@ public class AppiumTest{
 		//dubbing.testCase06();
 //		Assert.assertTrue(driver.findElement(By.name("热门")).isDisplayed());
 //		System.out.println(df.format(new Date()));
+		
 	}
 	
 	
