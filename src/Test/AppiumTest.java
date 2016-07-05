@@ -4,6 +4,7 @@ package Test;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 
 
 
@@ -54,10 +55,22 @@ public class AppiumTest{
 	//	basefunc.enterQuickDubbing(1);
 		System.out.println(driver.currentActivity());
 		//driver.closeApp();
-		Thread.sleep(5);
+		SystemHelper.sleep(5);
+		
+		if(!driver.currentActivity().equals(".act.home.HomeActivity")){
+		//	driver.getKeyboard().sendKeys("4");
+			System.out.println("-----------");
+			HashMap<String, Integer> keycode = new HashMap<String, Integer>();
+			keycode.put("keycode",4);
+			driver.execute("mobile: keyevent", keycode);
+			System.out.println(driver.currentActivity());
+		
+		}
+		
+		SystemHelper.sleep(5);
 		System.out.println(driver.currentActivity());
 		System.out.println("----closeApp.");
-		driver.startActivity("com.fangyanshow.dialectshow", ".ui.StartActivity");
+		
 		
 		
 	//	System.out.println("----launchApp.");

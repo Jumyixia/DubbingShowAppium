@@ -79,14 +79,8 @@ public class PubClass {
 	    return status;
 	}
 	
-	public List<WebElement> findElements(By by){
-		List<WebElement> list = null;
-		try{
-			list =  driver.findElements(by);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return list;
+	public void KeyOp(){
+	//
 	}
 		
 	public void tab(int i, int j) {
