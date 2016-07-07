@@ -2,24 +2,24 @@
 <testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="56993" started-at="2016-07-05T15:44:18Z" finished-at="2016-07-05T15:45:15Z">
+  <suite name="Default suite" duration-ms="50184" started-at="2016-07-07T15:14:46Z" finished-at="2016-07-07T15:15:36Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="56993" started-at="2016-07-05T15:44:18Z" finished-at="2016-07-05T15:45:15Z">
-      <class name="Test.AppiumTest">
-        <test-method status="PASS" signature="setUp()[pri:0, instance:Test.AppiumTest@327a5b7f]" name="setUp" is-config="true" duration-ms="31949" started-at="2016-07-05T23:44:18Z" finished-at="2016-07-05T23:44:50Z">
+    <test name="Default test" duration-ms="50184" started-at="2016-07-07T15:14:46Z" finished-at="2016-07-07T15:15:36Z">
+      <class name="PersonalTest.AppiumTest">
+        <test-method status="PASS" signature="setUp()[pri:0, instance:PersonalTest.AppiumTest@e478e18]" name="setUp" is-config="true" duration-ms="29163" started-at="2016-07-07T23:14:46Z" finished-at="2016-07-07T23:15:15Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method status="PASS" signature="Test1()[pri:1, instance:Test.AppiumTest@327a5b7f]" name="Test1" duration-ms="24134" started-at="2016-07-05T23:44:50Z" finished-at="2016-07-05T23:45:14Z">
+        <test-method status="PASS" signature="test2()[pri:0, instance:PersonalTest.AppiumTest@e478e18]" name="test2" duration-ms="19748" started-at="2016-07-07T23:15:15Z" finished-at="2016-07-07T23:15:35Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- Test1 -->
-        <test-method status="PASS" signature="tearDown()[pri:0, instance:Test.AppiumTest@327a5b7f]" name="tearDown" is-config="true" duration-ms="892" started-at="2016-07-05T23:45:14Z" finished-at="2016-07-05T23:45:15Z">
+        </test-method> <!-- test2 -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:PersonalTest.AppiumTest@e478e18]" name="tearDown" is-config="true" duration-ms="1254" started-at="2016-07-07T23:15:35Z" finished-at="2016-07-07T23:15:36Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-      </class> <!-- Test.AppiumTest -->
+      </class> <!-- PersonalTest.AppiumTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

@@ -50,18 +50,12 @@ public class AppiumTest{
 	public void Test1() throws InterruptedException, ParseException, IOException{
 		System.out.println("------------------start  test.");
 		//basefunc.enterApp();
-		System.out.println(driver.getCapabilities());
-		System.out.println("getContext"+driver.getContext());
-		System.out.println(""+driver.getCapabilities().getPlatform());
-				
+		
 		SystemHelper.sleep(5);
 	//	basefunc.enterQuickDubbing(1);
-		System.out.println(driver.currentActivity());
-		//driver.closeApp();
-		SystemHelper.sleep(5);
-		System.out.println("-----------1");
-		
-		driver.runAppInBackground(3);
+		System.out.println("00:" + driver.currentActivity());
+		driver.resetApp();
+		//driver.runAppInBackground(3);
 		System.out.println("-----------2");
 		//SystemHelper.sleep(7);
 		if(!driver.currentActivity().equals(".act.home.HomeActivity")){
@@ -79,8 +73,8 @@ public class AppiumTest{
 			driver.execute("mobile: keyevent", keycode);
 			 */
 			
-			System.out.println("-----------3");
-			System.out.println(driver.currentActivity());
+			//System.out.println("-----------3");
+			//System.out.println(driver.currentActivity());
 
 			//sendKeyEvent(AndroidKeyCode.HOME);
 		}
