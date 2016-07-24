@@ -1,5 +1,6 @@
 package BaseClass;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -17,12 +18,13 @@ public class BaseFunc {
 
 	public AndroidDriver driver;
 	public PubClass pub= null;
-	
+		
 	By by_quickdubbing = null;
 	By by_view = null;
 	By by_dubbing = null;
 	public int guidetype = 1; //提示tips是否存在1为存在，0不存在
 
+	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 
 	public BaseFunc(AndroidDriver driver, int guidetype){
 		this.driver = driver;
@@ -38,7 +40,7 @@ public class BaseFunc {
 	//进入首页
 	public void enterApp() throws InterruptedException{
 		System.out.println("----------enterApp");
-		
+		pub.checkRights();
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 
 		WebElement view = driver.findElement(by_view);
@@ -49,15 +51,17 @@ public class BaseFunc {
 			pub.swipeToLeft(500);//多滑几下，保险
 			driver.findElement(By.id("com.happyteam.dubbingshow:id/go")).click();
 		}
-		
+		System.out.println(df.format(new Date()));
 		if(guidetype == 1){
-			if(pub.isElementExist(By.name("下次更新"),3)){
+			if(pub.isElementExist(By.name("下次更新"),1)){
 				System.out.println("deal with updata...");
 				driver.findElement(By.name("下次更新")).click();			
 			}
+			System.out.println("1::"+df.format(new Date()));
 			guidetype = 0;
 		}
-
+		System.out.println(df.format(new Date()));
+		
 		WebElement mark = driver.findElementByName("热门");
 		mark.click();
 		Thread.sleep(2000);

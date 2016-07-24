@@ -42,7 +42,7 @@ public class AppiumTest{
 		System.out.println("start.");
 
 		driver = driverfactory.getAppiumDriver();
-		basefunc = new BaseFunc(driver,0);
+		basefunc = new BaseFunc(driver,1);
 		dubbing = new Dubbing(driver,0);		
 		//mem.content = "deleteshiping";
 		//mem.start();//开始读取手机的cpu和内存	
@@ -51,42 +51,20 @@ public class AppiumTest{
 	/*
 	 * 每一个测试test需要最终将页面回到首页
 	 */
-	@Test(priority = 1,enabled = false)
+	@Test(priority = 1)
 	public void Test1() throws InterruptedException, ParseException, IOException{
 		System.out.println("------------------start  test.");
-		//By by_title = By.name("个人中心");
-		//wait for 60s if WebElemnt show up less than 60s , then return , until 60s
-		System.out.println(df.format(new Date()));
-		AndroidDriverWait wait = new AndroidDriverWait(driver, 4);
-		try {
-			WebElement showClose = wait.until(new ExpectedCondition<WebElement>() {
-				@Override
-				public WebElement apply(AndroidDriver d) {
-					return d.findElement(By.name("个人中心"));
-				}
-			});
-			System.out.println(df.format(new Date()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
+		
+		
+		//basefunc.enterApp();	
+		System.out.println(driver.isAppInstalled("com.tencent.mobileqq"));
+		driver.installApp(System.getProperty("user.dir") + "/apps/mobileqq.apk");
+	//	driver.removeApp("com.tencent.mobileqq");
 	}
-	/*
-	WebDriverWait wait = new WebDriverWait(driver, 60);
 	
-    WebElement e= wait.until(new  ExpectedCondition<WebElement>() {
-            @Override
-            public WebElement apply(WebDriver d) {
-                return d.findElement(by_title);
-            }
-        });
-*/
-	
-	@Test()
+	@Test(enabled = false)
 	public void test2(){
-		driver.findElementByName("我的").click();
-		System.out.println(this.isElementExist(By.name("个人中心"),5));
-		driver.findElementByName("消息").click();
-		System.out.println(this.isElementExist(By.name("个人中心"),5));
+		
 	}
 	@AfterClass
 	public void tearDown() throws Exception{
@@ -94,31 +72,6 @@ public class AppiumTest{
 		//mem.stopRunning();//停止cpu获取和内存
 		driver.quit();
 	}
-
-	public boolean isElementExist(int timeout){
-		try{
-			new AndroidDriverWait(driver, 4).until(new ExpectedCondition<WebElement>() {
-				@Override
-				public WebElement apply(AndroidDriver d) {
-					return d.findElement(By.name("个人中心"));
-				}});
-			return true;
-		}catch(Exception e){
-			return false;
-		}
-		
-	}
-	
-	public boolean isElementExist(By by,int timeout){
-		try{
-			new WebDriverWait(driver, timeout).until(ExpectedConditions.presenceOfElementLocated(by));
-			return true;
-		}catch(Exception e){
-			return false;
-		}
-		
-	}
-	
 
 }
 

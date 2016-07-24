@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +27,7 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 
 public class PubClass {
+	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 	public AndroidDriver driver;
 	
 	public PubClass(AndroidDriver driver){
@@ -62,7 +65,6 @@ public class PubClass {
 		}catch(Exception e){
 			return false;
 		}
-		
 	}
 	
 	/**
@@ -79,6 +81,13 @@ public class PubClass {
 	        status = true;
 	    }
 	    return status;
+	}
+	
+	public void checkRights(){
+		By by = By.name("允许");
+		while(isElementExist(by,1)){
+			driver.findElement(by).click();
+		}
 	}
 	
 	public void KeyOp(){
