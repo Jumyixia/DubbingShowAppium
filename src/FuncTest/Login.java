@@ -3,6 +3,7 @@ package FuncTest;
 
 import BaseClass.BaseFunc;
 import BaseClass.DubbingPage;
+import BaseClass.LoginFunc;
 import BaseClass.PubClass;
 import BaseClass.UploadPage;
 import BaseClass.VideoDetailPage;
@@ -15,6 +16,7 @@ public class Login {
 	public VideoDetailPage videodetailpage = null;
 	public DubbingPage dubbingpage= null;
 	public UploadPage uploadpage = null;
+	public LoginFunc loginfunc = null;
 	public int guidetype = 1; //提示tips是否存在1为存在，0不存在
 	
 	public Login(AndroidDriver driver,int guidetype){
@@ -24,5 +26,11 @@ public class Login {
 		videodetailpage = new VideoDetailPage(driver);
 		dubbingpage = new DubbingPage(driver,guidetype);
 		uploadpage = new UploadPage(driver);
+		loginfunc = new LoginFunc(driver, guidetype);
+	}
+	
+	public void Login1(){
+		driver.findElementById("com.happyteam.dubbingshow:id/chest_sign").click();
+		loginfunc.LoginByqq();
 	}
 }

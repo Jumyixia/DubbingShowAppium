@@ -16,6 +16,7 @@ import BaseClass.BaseFunc;
 import BaseClass.DubbingPage;
 import BaseClass.VideoDetailPage;
 import FuncTest.Dubbing;
+import FuncTest.Login;
 import ObjectFactory.DriverFactory;
 import Util.SystemHelper;
 import Util.Console;
@@ -31,6 +32,7 @@ public class AppiumTest{
 	public DubbingPage dubbingpage= null;
 	public DriverFactory driverfactory = null;
 	public Dubbing dubbing= null;
+	public Login login = null;
 	
 	@BeforeClass
 	public void setUp() throws Exception{
@@ -38,7 +40,8 @@ public class AppiumTest{
 
 		driver = driverfactory.getAppiumDriver();
 		basefunc = new BaseFunc(driver,0);
-		dubbing = new Dubbing(driver,0);		
+		dubbing = new Dubbing(driver,0);
+		login = new Login(driver, 0);
 		//mem.content = "deleteshiping";
 		//mem.start();//开始读取手机的cpu和内存	
 	}	
@@ -49,17 +52,12 @@ public class AppiumTest{
 	@Test(priority = 1)
 	public void Test1() throws InterruptedException, ParseException, IOException{
 		System.out.println("------------------start  test.");
-		//basefunc.enterApp();
+
+
+		login.Login1();
+	}
 		
-		SystemHelper.sleep(5);
-	//	basefunc.enterQuickDubbing(1);
-		System.out.println("00:" + driver.currentActivity());
-		driver.resetApp();
-		//driver.runAppInBackground(3);
-		System.out.println("-----------2");
-		//SystemHelper.sleep(7);
-		if(!driver.currentActivity().equals(".act.home.HomeActivity")){
-			
+
 			
 		//	driver.getKeyboard().sendKeys("4");
 			
@@ -77,7 +75,7 @@ public class AppiumTest{
 			//System.out.println(driver.currentActivity());
 
 			//sendKeyEvent(AndroidKeyCode.HOME);
-		}
+		
 		
 			
 		
@@ -89,7 +87,6 @@ public class AppiumTest{
 		//dubbing.testCase06();
 //		Assert.assertTrue(driver.findElement(By.name("热门")).isDisplayed());
 //		System.out.println(df.format(new Date()));
-	}
 	
 	@Test(priority = 2, enabled = false)
 	public void Test2() throws InterruptedException, ParseException, IOException{
