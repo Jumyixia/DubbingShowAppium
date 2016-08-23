@@ -100,7 +100,7 @@ public class DriverFactory {
 		capabilities.setCapability(MobileCapabilityType.APP_WAIT_PACKAGE,"com.happyteam.dubbingshow");
 		capabilities.setCapability("autoLaunch", true);
 		capabilities.setCapability("noSign","noSign");
-		capabilities.setCapability("unicodeKeyboard", false);
+		capabilities.setCapability("unicodeKeyboard", true);
 		// capabilities.setCapability("autoWebview","true");
 		capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT,"600");
 		// 不重新安装app，appium安装导致app提示恶意篡改

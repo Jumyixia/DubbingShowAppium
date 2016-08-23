@@ -64,7 +64,7 @@ public class BaseFunc {
 		
 		WebElement mark = driver.findElementByName("»»√≈");
 		mark.click();
-		Thread.sleep(2000);
+		SystemHelper.sleep(2);
 
 	}
 	
@@ -125,7 +125,7 @@ public class BaseFunc {
 		driver.manage().timeouts().implicitlyWait(20,  TimeUnit.SECONDS);
 		WebElement filmimg = driver.findElementById("com.happyteam.dubbingshow:id/filmimg");
 		filmimg.click();
-		Thread.sleep(2000);
+		SystemHelper.sleep(2);
 	}
 	
 	/**
@@ -151,7 +151,7 @@ public class BaseFunc {
 		WebElement ok = driver.findElementById("com.fangyanshow.dialectshow:id/tv_login");
 		
 		phonenum.sendKeys("18767122238");
-		Thread.sleep(1000);
+		SystemHelper.sleep(1);
 		phonepad.click();
 		phonepad.sendKeys("000000");
 		ok.click();

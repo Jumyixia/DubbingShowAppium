@@ -216,12 +216,12 @@ public class DubbingPage {
 
 		log =  "video_time_int ,  " + video_time_int/1000 ;
 		
-		Thread.sleep(3000);
+		SystemHelper.sleep(3);		
 
 		//开始配音并完成
 		if(dubbing_time >= 8000 && dubbing_time <= video_time_int){
 
-			Thread.sleep(dubbing_time);
+			SystemHelper.sleep(dubbing_time/1000);
 			
 			pub.tab(890, 1650);
 		
@@ -231,12 +231,12 @@ public class DubbingPage {
 			}
 			
 		}else if(dubbing_time < 8000){
-			Thread.sleep(video_time_int);
+			SystemHelper.sleep(video_time_int/1000);
 			//自动点击完成按钮等待合成
 		//	System.out.println(df.format(new Date()));
 
 		}else if(dubbing_time >= video_time_int){
-			Thread.sleep(video_time_int );
+			SystemHelper.sleep(video_time_int/ 1000);
 			complete_btn = driver.findElement(by_complete);
 			System.out.println(df.format(new Date()));
 			complete_btn.click();

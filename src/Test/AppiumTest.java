@@ -17,6 +17,7 @@ import BaseClass.DubbingPage;
 import BaseClass.VideoDetailPage;
 import FuncTest.Dubbing;
 import FuncTest.Login;
+import FuncTest.MesCenter;
 import ObjectFactory.DriverFactory;
 import Util.SystemHelper;
 import Util.Console;
@@ -33,6 +34,7 @@ public class AppiumTest{
 	public DriverFactory driverfactory = null;
 	public Dubbing dubbing= null;
 	public Login login = null;
+	public MesCenter mescenter = null;
 	
 	@BeforeClass
 	public void setUp() throws Exception{
@@ -42,6 +44,7 @@ public class AppiumTest{
 		basefunc = new BaseFunc(driver,0);
 		dubbing = new Dubbing(driver,0);
 		login = new Login(driver, 0);
+		mescenter = new MesCenter(driver, 0);
 		//mem.content = "deleteshiping";
 		//mem.start();//开始读取手机的cpu和内存	
 	}	
@@ -53,8 +56,8 @@ public class AppiumTest{
 	public void Test1() throws InterruptedException, ParseException, IOException{
 		System.out.println("------------------start  test.");
 
-
-		login.Login1();
+		mescenter.SentMesTosb();
+		
 	}
 		
 
