@@ -72,10 +72,11 @@ public class BaseFunc {
 	 * 判断是否在首页，如果不是，则杀掉进程重启app
 	 */
 	public void BackToHome(){
-		WebElement quickbtn = driver.findElement(by_quickdubbing);
-		if(!quickbtn.isDisplayed()){
-			driver.closeApp();
-			driver.launchApp();
+		System.out.println("BackToHome");
+		if(!pub.isElementExist(by_quickdubbing, 2)){
+			pub.extcmd("adb shell am force-stop com.happyteam.dubbingshow");
+			pub.extcmd("adb shell am start -n com.happyteam.dubbingshow/com.happyteam.dubbingshow.ui.StartActivity");
+			SystemHelper.sleep(2);
 		}
 		
 	}

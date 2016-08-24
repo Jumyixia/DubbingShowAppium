@@ -1,5 +1,6 @@
 package BaseClass;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -29,6 +30,8 @@ import io.appium.java_client.android.AndroidDriver;
 public class PubClass {
 	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 	public AndroidDriver driver;
+
+	private static Process process;
 	
 	public PubClass(AndroidDriver driver){
 		this.driver = driver;
@@ -323,6 +326,7 @@ public class PubClass {
 	/**
 	 * @author Jum
 	 * @param screenFile
+	 * 
 	 */
 	public void screenCut(File screenFile){     
 		File screen = driver.getScreenshotAs(OutputType.FILE);
@@ -331,6 +335,34 @@ public class PubClass {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
+	}
+	
+	/**
+	 * 执行cmd命令
+	 * @param cmd 传入须执行的命令
+	 * 杀掉app：adb shell am force-stop packagename
+	 * 启动app：adb shell am start -n packagename/第一个启动的Activitity
+	 */
+	public void extcmd(String cmd){
+		Runtime runtime = Runtime.getRuntime();
+		try {
+			process = runtime.exec(cmd);
+			/*支持读取执行结果
+			 * BufferedInputStream in = new BufferedInputStream(process.getInputStream());			
+			byte c[] = new byte[10];
+			int n = 0;
+			while ((n = in.read(c)) != -1) {
+				String temp = new String(c, 0, n);
+				System.out.println(temp);
+			}
+			
+			in.close();
+			 */
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

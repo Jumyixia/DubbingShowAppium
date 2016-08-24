@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 
 import BaseClass.BaseFunc;
 import BaseClass.DubbingPage;
+import BaseClass.PubClass;
 import BaseClass.VideoDetailPage;
 import FuncTest.Dubbing;
 import FuncTest.Login;
@@ -35,6 +36,7 @@ public class AppiumTest{
 	public Dubbing dubbing= null;
 	public Login login = null;
 	public MesCenter mescenter = null;
+	public PubClass pub = null;
 	
 	@BeforeClass
 	public void setUp() throws Exception{
@@ -45,6 +47,7 @@ public class AppiumTest{
 		dubbing = new Dubbing(driver,0);
 		login = new Login(driver, 0);
 		mescenter = new MesCenter(driver, 0);
+		pub = new PubClass(driver);
 		//mem.content = "deleteshiping";
 		//mem.start();//开始读取手机的cpu和内存	
 	}	
@@ -52,11 +55,11 @@ public class AppiumTest{
 	/*
 	 * 每一个测试test需要最终将页面回到首页
 	 */
-	@Test(priority = 1)
+	@Test(priority = 1, enabled = false)
 	public void Test1() throws InterruptedException, ParseException, IOException{
 		System.out.println("------------------start  test.");
 
-		mescenter.SentMesTosb();
+		//mescenter.SentMesTosb();
 		
 	}
 		
@@ -101,6 +104,19 @@ public class AppiumTest{
 //		System.out.println(df.format(new Date()));
 		
 	}
+	
+	@Test(priority = 2)
+	public void Test3() throws InterruptedException, ParseException, IOException{
+		System.out.println("------------------start  test.");
+	//	basefunc.enterApp();
+	
+		//System.out.println(driver.getAppStrings());
+		driver.findElementByName("圈子").click();
+		basefunc.BackToHome();
+		SystemHelper.sleep(30);
+	}
+	
+	
 	
 	
 	@AfterClass
