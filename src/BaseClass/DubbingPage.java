@@ -25,6 +25,7 @@ public class DubbingPage {
 	public int roletype = 0; //记录当前进行的是单配合适合作配音
 	public int guidetype = 1; //提示tips是否存在1为存在，0不存在
 	public String log = null;
+	public String hysourcetime = null;
 	
 	//	配音界面	
 	By by_back = null;
@@ -45,17 +46,28 @@ public class DubbingPage {
 	//  预览界面
 	By by_review_title = null;
 	By by_playbtn = null;
+	//	人声
 	By by_dubbingSeekbar = null;
+	By by_pitch = null;
 	By by_fx = null;
 	By by_mix = null;
 	By by_roomsize = null;
 	By by_echo = null;
 	By by_vol = null;
+	
+	By by_guide = null;
+	//	背景音
 	By by_bgfx = null;
 	By by_bgvol = null;
-	By by_guide = null;
-	
 	By by_btnback = null;
+	By by_bg = null;
+	By by_musiclist = null;
+
+	private By by_next;
+
+	private By by_ok;
+
+	private By by_record;
 	
 	public DubbingPage(AndroidDriver driver, int guidetype){
 		this.driver = driver;
@@ -78,12 +90,17 @@ public class DubbingPage {
 		by_complete = By.id("com.happyteam.dubbingshow:id/complete");	//完成按钮
 		by_btnSubmit = By.id("com.happyteam.dubbingshow:id/btnSubmit"); 	// 点击完成按钮时，弹出询问弹窗的确定按钮
 		by_btnCancel = By.id("com.happyteam.dubbingshow:id/btnCancel");	//弹出询问弹窗的取消按钮
+		//合演配音界面
+		by_record = By.id("com.happyteam.dubbingshow:id/record");	//配音按钮
+		
+		
 		//界面按钮初始化--预览界面
 		by_review_title = By.name("预览");
 		by_playbtn = By.id("com.happyteam.dubbingshow:id/play_button");	//预览播放按钮
 		by_guide  = By.id("com.happyteam.dubbingshow:id/btnGuideFixStart");
 		by_dubbingSeekbar = By.id("com.happyteam.dubbingshow:id/dubbingSeekbar"); //人声音量调整区域
 		by_vol = By.id("com.happyteam.dubbingshow:id/vol"); 	//人声音量
+		by_pitch = By.id("com.happyteam.dubbingshow:id/pitch");	//人声变声
 		by_fx =By.id("com.happyteam.dubbingshow:id/fx");	//人声特效
 		by_mix = By.id("com.happyteam.dubbingshow:id/mix");	//人声混响
 		by_roomsize = By.id("com.happyteam.dubbingshow:id/roomsize");	//人声空间
@@ -91,6 +108,13 @@ public class DubbingPage {
 		
 		by_bgfx = By.id("com.happyteam.dubbingshow:id/bgfx");
 		by_bgvol = By.id("com.happyteam.dubbingshow:id/bgvol");
+		by_bg = By.id("com.happyteam.dubbingshow:id/imgBgCount");
+		by_musiclist = By.id("com.happyteam.dubbingshow:id/listView");
+		by_next = By.id("com.happyteam.dubbingshow:id/btnRight");
+		by_ok = By.id("com.happyteam.dubbingshow:id/complete");
+		
+		
+		
 		
 		by_btnback  = By.id("com.happyteam.dubbingshow:id/btnBack");	//素材库界面的返回按钮
 	}
@@ -189,18 +213,29 @@ public class DubbingPage {
 	}
 	
 	/*
-	 * 完成进入预览界面
+	 * 开始配音，完成进入预览界面
 	 * dubbing_time: <8000 || >=素材时长 则直接等配音结束直接自动跳转到配音页面
 	 * dubbing_time: >=8000 || <素材时长 按dubbing_time的时间点击完成按钮
 	 */
 	public void EnterViewPage(int dubbing_time) throws ParseException, InterruptedException{
 		int video_time_int = 0;//素材时长转换成按秒计	
+		int x=0,y =0;
 		String video_time,time1,time2 = null;
 
 		WebElement complete_btn = null;
 		WebElement endconfirm_btn = null;
 		System.out.println("-----------EnterViewPage.");
 
+		if(dubbing_time >= 8000){
+			// 计算完成按钮的位置
+			List<WebElement> bottom = (driver.findElement(By.id("com.happyteam.dubbingshow:id/bottom_container"))).findElements(By.className("android.widget.FrameLayout"));
+			System.out.println(bottom.size());
+			x = bottom.get(0).getLocation().x + bottom.get(0).getSize().getWidth()/2;
+			y = bottom.get(0).getLocation().y + bottom.get(0).getSize().getHeight()/2;
+			System.out.println(x+"==="+y);
+		}
+
+		
 		List<WebElement> dubbing_btn = driver.findElements(by_dubbing);
 		if(dubbing_btn.size() > 1){	//快速配音页面特殊处理
 			 dubbing_btn.get(1).click();
@@ -220,10 +255,11 @@ public class DubbingPage {
 
 		//开始配音并完成
 		if(dubbing_time >= 8000 && dubbing_time <= video_time_int){
-
-			SystemHelper.sleep(dubbing_time/1000);
 			
-			pub.tab(890, 1650);
+			SystemHelper.sleep(dubbing_time/1000);
+					
+			System.out.println(x+",,,"+y);
+			pub.tab(x, y);
 		
 			if(pub.isElementExist(by_btnSubmit)){//如果存在询问弹窗则点击确定按钮
 				endconfirm_btn = driver.findElement(by_btnSubmit);
@@ -232,8 +268,9 @@ public class DubbingPage {
 			
 		}else if(dubbing_time < 8000){
 			SystemHelper.sleep(video_time_int/1000);
-			//自动点击完成按钮等待合成
-		//	System.out.println(df.format(new Date()));
+			//自动点击完成按钮等待合成,在预览界面等待2秒
+			SystemHelper.sleep(2);
+			
 
 		}else if(dubbing_time >= video_time_int){
 			SystemHelper.sleep(video_time_int/ 1000);
@@ -247,7 +284,57 @@ public class DubbingPage {
 		}
 		//driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		//WebElement review_title = driver.findElement(by_review_title);
-		pub.isElementExist(by_review_title,30000);
+
+		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+
+		System.out.println(pub.isElementExist(by_review_title,30));
+		
+		//System.out.println("guidetype = " + guidetype);
+		if(guidetype == 1){
+			if (pub.isElementExist(by_guide, 1)) {
+				WebElement guide = driver.findElement(by_guide);
+				guide.click();
+			}	
+			guidetype = 0;
+		}
+			
+	//	System.out.println("enter yulan");			
+	}
+	
+	
+	public void HyEnterViewPage() {
+		int video_time_int = 0;//素材时长转换成按秒计	
+		int x=0,y =0;
+		String video_time,time1,time2 = null;
+
+		WebElement complete_btn = null;
+		WebElement endconfirm_btn = null;
+		System.out.println("-----------HyEnterViewPage.");
+
+		WebElement dubbing_btn = driver.findElement(by_record);
+
+		dubbing_btn.click();
+		
+		System.out.println(hysourcetime);
+		if (hysourcetime != null) {
+			time1 = hysourcetime.substring(0, 2);
+			time2 = hysourcetime.substring(3, 5);
+			video_time_int = Integer.parseInt(time1) * 60000 + Integer.parseInt(time2) * 1000;
+			//等待读秒以及配音时间
+			SystemHelper.sleep(3+video_time_int/1000);		
+			driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+		}else{
+			driver.manage().timeouts().implicitlyWait(240, TimeUnit.SECONDS);
+		}		
+
+		//driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		//WebElement review_title = driver.findElement(by_review_title);
+
+
+		System.out.println(pub.isElementExist(by_review_title,30));
+		
+		SystemHelper.sleep(3);
+		
 		//System.out.println("guidetype = " + guidetype);
 		if(guidetype == 1){
 			if (pub.isElementExist(by_guide, 1)) {
@@ -294,7 +381,80 @@ public class DubbingPage {
 		pub.swipeOnElement(dubbingSeekbar, "Down", 1000);
 	}
 	
-	public void ViewPage(){
+	public void pitch(){
+		driver.findElement(by_pitch).click();
+		WebElement dubbingSeekbar = driver.findElement(By.id("com.happyteam.dubbingshow:id/pitchSeekbar"));
+		pub.swipeOnElement(dubbingSeekbar, "Down", 1000);
+		SystemHelper.sleep(5);
+	}
+	
+	public void bgvol(){
+		driver.findElement(by_bgvol).click();
+		WebElement dubbingSeekbar = driver.findElement(By.id("com.happyteam.dubbingshow:id/backgroudSeekbar"));
+		pub.swipeOnElement(dubbingSeekbar, "Down", 1000);
+		SystemHelper.sleep(5);
+	}
+	
+	/**
+	 * 新增背景音
+	 * @param type 1为使用自带的通用音乐 2为添加本地音乐
+	 */
+	public void addBg(int type){
+		SystemHelper.sleep(2);
+		System.out.println("adbg");
+		
+		for(int i = 0; i <2; i++){
+		
+			WebElement bgbtn = driver.findElement(by_bg);
+			bgbtn.click();
+			SystemHelper.sleep(1);
+			pub.tab(pub.appScreen()[0] / 2, pub.appScreen()[1] - 10); // 新增背景音按钮无法识别
+			if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/txtTitle"), 5)){//判断是否进入通用背景音页面
+				break;
+			}
+		}
+		
+		if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/txtTitle"), 5)){//判断是否进入通用背景音页面
+			if(type == 1){
+				WebElement musiclist = driver.findElement(by_musiclist);
+				List<WebElement> musics_random = musiclist.findElements(By.className("android.widget.FrameLayout"));
+				WebElement music = musics_random.get(pub.getrandom(7));
+				WebElement nextbtn = driver.findElement(by_next);
+				music.click();
+				for(int i = 0; i<5; i++){
+					
+					if(nextbtn.getAttribute("enabled").equals("false")){
+						//从通用音乐中随机选择一个，通过"下一步"按钮是否可点确定是否已经下载						
+						SystemHelper.sleep(10);
+						
+					}else {
+						System.out.println(1);
+						nextbtn.click();
+						
+						if(pub.isElementExist(By.name("背景音剪辑"), 3)){
+							System.out.println(2);
+							driver.findElement(by_ok).click();
+							System.out.println(3);
+							if(pub.isElementExist(By.name("预览"))){
+								System.out.println("add bg success.");
+							}
+							break;
+						}else{
+							System.out.println("enter cut page failed.");
+						}
+					}
+				}
+				
+			}else if(type == 2){
+				 
+			}else{
+				System.out.println("type error.");
+			}
+		}else{
+			System.out.println("enter add music list failed.");			
+		}
+		
+		
 		
 	}
 

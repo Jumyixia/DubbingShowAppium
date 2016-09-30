@@ -16,13 +16,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import BaseClass.BaseFunc;
-import BaseClass.CirclePage;
 import BaseClass.DetailPage;
 import BaseClass.DubbingPage;
 import BaseClass.PubClass;
 import BaseClass.ScreenCut;
 import BaseClass.VideoDetailPage;
-import FuncTest.Circle;
 import FuncTest.Dubbing;
 import FuncTest.Login;
 import FuncTest.MesCenter;
@@ -32,7 +30,7 @@ import Util.Console;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidKeyCode;
 
-public class AppiumTest{
+public class TestForAppI30{
 	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 	
 	public AndroidDriver driver = null;
@@ -46,8 +44,6 @@ public class AppiumTest{
 	public PubClass pub = null;
 	public ScreenCut scut = null;
 	public DetailPage detailpage = null;
-	public CirclePage  circlepage = null;
-	public Circle circle = null;
 	
 	@BeforeClass
 	public void setUp() throws Exception{
@@ -61,47 +57,57 @@ public class AppiumTest{
 		pub = new PubClass(driver);
 		scut = new ScreenCut(driver);
 		detailpage = new DetailPage(driver, 0);
-		circlepage = new CirclePage(driver, 0);
-		circle = new Circle(driver, 0);
-	//	scut.start();
+		scut.start();
 		//mem.content = "deleteshiping";
 		//mem.start();//开始读取手机的cpu和内存	
 	}	
 	
-
+	/*
+	 * 每一个测试test需要最终将页面回到首页
+	 * 在首页选择视频进入视频详情页每个视频看30秒
+	 */
 	@Test(priority = 1)
 	public void Test1() throws InterruptedException, ParseException, IOException{
 		System.out.println("------------------start  test.");
-	
-		basefunc.enterApp();
-		SystemHelper.sleep(1);
-		 System.out.println("------------------start  test.");
-//driver.findElementByName("只看楼主").click();
-		//mescenter.SentMesTosb();
-		 circle.testCase01();
-		 
-		
+		for (int i = 0; i <5; i++) {			
+			pub.swipeToUp(500);
+			detailpage.viewFilmFromHome();
+
+		}
 	}
 		
-	@Test(priority = 2, enabled = false)
+	@Test(priority = 2)
 	public void Test2() throws InterruptedException, ParseException, IOException{
-		System.out.println("------------------start  test.");
-		basefunc.enterQuickDubbing(1);
+		System.out.println("------------------start  test2.");
+		dubbing.testCase06();
+		basefunc.EnterHome();
+		
  
 	}
+	
 
-	@Test(priority = 2,enabled = false)
+	@Test(priority = 3,enabled = false)
 	public void Test3() throws InterruptedException, ParseException, IOException{
-		System.out.println("------------------start  test.");
-		SystemHelper.sleep(8);
-		System.out.println("------------------start  test1.");
-		SystemHelper.sleep(3);
-		System.out.println("------------------start  test2.");
-		System.out.println(pub.waitUntilDisappear(By.name("关注"),10));;
-		
-		//dubbing.testCase06();
-		
+		System.out.println("------------------start  test3.");
+		dubbing.testCase07();
+		basefunc.EnterHome();
 	}
+	
+	@Test(priority = 4,enabled = false)
+	public void Test4() throws InterruptedException, ParseException, IOException{
+		System.out.println("------------------start  test4.");
+		dubbing.testCase08();
+		basefunc.EnterHome();
+	}
+	
+	@Test(priority = 5,enabled = false)
+	public void Test5() throws InterruptedException, ParseException, IOException{
+		System.out.println("------------------start  test5.");
+		
+
+	}
+	
+	
 	
 	
 	@AfterClass

@@ -11,9 +11,11 @@ import org.openqa.selenium.WebElement;
 import BaseClass.BaseFunc;
 import BaseClass.DubbingPage;
 import BaseClass.PubClass;
+import BaseClass.SourceViewPage;
 import BaseClass.UploadPage;
 import BaseClass.VideoDetailPage;
 import ObjectFactory.DriverFactory;
+import Util.SystemHelper;
 import io.appium.java_client.android.AndroidDriver;
 
 public class Dubbing {
@@ -23,7 +25,9 @@ public class Dubbing {
 	public VideoDetailPage videodetailpage = null;
 	public DubbingPage dubbingpage= null;
 	public UploadPage uploadpage = null;
+	public SourceViewPage srview = null;
 	public int guidetype = 1; //提示tips是否存在1为存在，0不存在
+	private By by_source;
 	
 	public Dubbing(AndroidDriver driver,int guidetype){
 		this.driver = driver;
@@ -32,6 +36,9 @@ public class Dubbing {
 		videodetailpage = new VideoDetailPage(driver);
 		dubbingpage = new DubbingPage(driver,guidetype);
 		uploadpage = new UploadPage(driver);
+		srview = new SourceViewPage(driver,guidetype );
+		
+		by_source = By.id("com.happyteam.dubbingshow:id/container");	//素材库一个素材项
 	}
 	
 	/**
@@ -134,11 +141,138 @@ public class Dubbing {
 	}
 
 	/**
-	 * 
+	 * 1. 从首页进入素材库
+	 * 2. 素材库上滑后选择任意视频进入素材预览然后进入配音界面
+	 * 3. 配音一段时间后，完成配音进入调音界面
+	 * 4. 在调音界面条件人声音量、变声、特效
+	 * 5. 点击完成进入上传界面，上传成功返回到首页 
 	 */
 	public void testCase06() {
-		// TODO Auto-generated method stub
-		pub.WriteinFile("1234567890", "123.txy");
+		basefunc.enterSomeFunc("2");
+		if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/btnSearch"),10)){//通过判断是否存在搜索按钮来判断是否进入素材库
+			pub.swipeToUp(500);
+			SystemHelper.sleep(1);
+			driver.findElement(by_source).click();
+			
+			if(srview.enterDubbing()){
+				//去掉引导页
+				pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
+				pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
+				pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
+				
+				try {
+					dubbingpage.EnterViewPage(10);
+					dubbingpage.vol();
+					dubbingpage.pitch();
+					dubbingpage.fx();
+					dubbingpage.enterUploadPage(1);	
+					uploadpage.Upload();
+					
+					if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/btnBack"))){
+						driver.findElement(By.id("com.happyteam.dubbingshow:id/btnBack")).click();
+						if(!pub.isElementExist(By.name("热门"))){
+							System.out.println("back to home failed.");
+						}
+					}else{
+						System.out.println("upload back to sourcePage failed.");
+					}
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}else {
+			System.out.println("enter sourcelib failed.");
+		}
+	}
+	
+	/**
+	 * 1. 从首页+号进入趣味配音
+	 * 2. 趣味配音页面开启实况、开始配音；
+	 * 3. 配音完成后，自动进入调音界面
+	 * 4. 调音界面条件背景音音量、并选择通用音乐新增背景音
+	 * 5. 完成新增背景音后，点击完成按钮进入上传页面，上传作品返回首页
+	 */
+	public void testCase07() {
+		basefunc.enterSomeFunc("1");
+		if(basefunc.enterQuickDubbing(1)){//进入快速配音成功
+			dubbingpage.Living(1);
+			try {
+				dubbingpage.EnterViewPage(0);
+				dubbingpage.addBg(1);
+				dubbingpage.bgvol();
+
+				dubbingpage.enterUploadPage(1);
+				uploadpage.Upload();
+
+				
+				if (!pub.isElementExist(By.name("热门"))) {
+					System.out.println("back to home failed.");
+				}
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}else {
+			System.out.println("enter qwpy failed.");
+		}
+	}
+	
+	
+	/**
+	 * 合演配音
+	 * 1. 从首页热门+号进入合演素材列表
+	 * 2. 上滑选择素材进入素材预览界面，进入配音（该case 不考虑是否是双人素材，均默认为单人）
+	 * 3. 设置开启背景音，然后开始配音
+	 * 4. 完成配音后进入调音界面
+	 * 5. 在调音界面点击完成按钮进入上传页面，在上传界面完成上传返回到素材库
+	 * 6. 素材库点击返回，返回到首页
+	 */
+	public void testCase08(){
+		basefunc.enterSomeFunc("3");
+		if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/btnSearch"),10)){//通过判断是否存在搜索按钮来判断是否进入素材库
+			pub.swipeToUp(500);
+			SystemHelper.sleep(1);
+			WebElement hysource = driver.findElement(by_source);
+			//	此处如果该素材没有显示时长，则会报错
+			WebElement hysourcetime = hysource.findElement(By.id("com.happyteam.dubbingshow:id/tv_time"));
+			dubbingpage.hysourcetime = hysourcetime.getText().trim();
+			hysource.click();
+			
+			if(srview.enterDubbing()){
+				//去掉引导页
+				pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]/2);
+				
+				try {
+					dubbingpage.HyEnterViewPage();
+					
+					dubbingpage.enterUploadPage(1);	
+					uploadpage.Upload();
+					
+					if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/btnBack"))){
+						driver.findElement(By.id("com.happyteam.dubbingshow:id/btnBack")).click();
+						if(!pub.isElementExist(By.name("热门"))){
+							System.out.println("back to home failed.");
+						}
+					}else{
+						System.out.println("upload back to sourcePage failed.");
+					}
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+			}
+		}else {
+			System.out.println("enter sourcelib failed.");
+		}
 	}
 	
 	

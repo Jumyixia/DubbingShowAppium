@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import BaseClass.PubString;
 import Util.Console;
 import Util.SystemHelper;
 //import Listeners.MTListener;
@@ -27,7 +28,8 @@ public class DriverFactory {
 	private static WebDriver webDriver;
 	private static int appiumPort = 4723;
 	private static Vector<String> ports = new Vector<String>();
-
+	private static PubString str = new PubString();
+	
 	/**
 	 * 初始化MTdriver 不要修改此方法
 	 * 
@@ -67,11 +69,11 @@ public class DriverFactory {
 		System.out.println("getAppiumDriver");
 		String port = null;
 		if (appiumDriver == null) {
-			System.out.println("judge os");			
-			String cmdPath = "E:/AndroidFiles/Appium/node_modules/.bin/appium.cmd -p 4723";
+			//System.out.println("judge os");			
+			//String cmdPath = "E:/AndroidFiles/Appium/node_modules/.bin/appium.cmd -p 4723";
 			//String cmdPath = "E:/AndroidFile/Appium/node_modules/.bin/appium.cmd -p 4723";
 			try {
-				Runtime.getRuntime().exec("cmd /c start " + cmdPath);
+				Runtime.getRuntime().exec("cmd /c start " + str.cmdPath);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -84,7 +86,7 @@ public class DriverFactory {
 		System.out.println("start android");
 		File classpathRoot = new File(System.getProperty("user.dir"));
 		File appDir = new File(classpathRoot, "apps");
-		File app = new File(appDir,"dubbingshow.apk");
+		File app = new File(appDir,str.apkname);
 
 		System.out.println("start capabilities");
 		// 设置参数
@@ -94,10 +96,10 @@ public class DriverFactory {
 		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME,"Ju");
 		// 配置中的app名称必须与实际安装的app名称一致
 		capabilities.setCapability(MobileCapabilityType.APP,app.getAbsolutePath());
-		capabilities.setCapability(MobileCapabilityType.APP_PACKAGE,"com.happyteam.dubbingshow");
-		capabilities.setCapability(MobileCapabilityType.APP_ACTIVITY,"com.happyteam.dubbingshow.ui.StartActivity");
-		capabilities.setCapability(MobileCapabilityType.APP_WAIT_ACTIVITY,".act.home.HomeActivity");
-		capabilities.setCapability(MobileCapabilityType.APP_WAIT_PACKAGE,"com.happyteam.dubbingshow");
+		capabilities.setCapability(MobileCapabilityType.APP_PACKAGE,str.packagename);
+		capabilities.setCapability(MobileCapabilityType.APP_ACTIVITY,str.startactivity);
+		capabilities.setCapability(MobileCapabilityType.APP_WAIT_ACTIVITY,str.startactivity);
+		capabilities.setCapability(MobileCapabilityType.APP_WAIT_PACKAGE,str.packagename);
 		capabilities.setCapability("autoLaunch", true);
 		capabilities.setCapability("noSign","noSign");
 		capabilities.setCapability("unicodeKeyboard", true);

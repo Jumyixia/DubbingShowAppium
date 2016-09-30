@@ -18,10 +18,20 @@ public class BaseFunc {
 
 	public AndroidDriver driver;
 	public PubClass pub= null;
+	public PubString str = null;
 		
 	By by_quickdubbing = null;
+	
 	By by_view = null;
 	By by_dubbing = null;
+	By by_bottombar = null;
+	
+	By by_by_quickdubbing2 = null;
+	By by_sourcelib = null;
+	By by_jqhylib = null;
+	By by_hzgc = null;
+	By by_uploadsource = null;
+	By by_uploadfilm = null;
 	public int guidetype = 1; //提示tips是否存在1为存在，0不存在
 
 	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
@@ -30,10 +40,17 @@ public class BaseFunc {
 		this.driver = driver;
 		pub = new PubClass(driver);		
 		this.guidetype = guidetype;
+		str = new PubString();
 		
 		by_view = By.className("android.widget.ImageView");
 		by_quickdubbing = By.id("com.happyteam.dubbingshow:id/iv_fast");	//快速配音
+		 //+号页按钮
+		by_by_quickdubbing2 = By.id("com.happyteam.dubbingshow:id/qwpy_view");
+		by_sourcelib = By.id("com.happyteam.dubbingshow:id/sc_view");
+		by_jqhylib = By.id("com.happyteam.dubbingshow:id/jqhy_view");
+		
 		by_dubbing = By.id("com.happyteam.dubbingshow:id/dubbing");	//素材库页面的配音按钮
+		by_bottombar = By.id("com.happyteam.dubbingshow:id/layoutBottom");	//首页底端的bar
 	}
 	
 	
@@ -71,13 +88,14 @@ public class BaseFunc {
 	/*
 	 * 判断是否在首页，如果不是，则杀掉进程重启app
 	 */
-	public void BackToHome(){
+	public void EnterHome(){
 		System.out.println("BackToHome");
-		if(!pub.isElementExist(by_quickdubbing, 2)){
-			pub.extcmd("adb shell am force-stop com.happyteam.dubbingshow");
-			pub.extcmd("adb shell am start -n com.happyteam.dubbingshow/com.happyteam.dubbingshow.ui.StartActivity");
+		if(!pub.isElementExist(By.name("热门"), 2)){
+			pub.extcmd("adb shell am force-stop " + str.packagename);
+			pub.extcmd("adb shell am start -n " + str.packagename +" / "+ str.startactivity);
 			SystemHelper.sleep(2);
 		}
+		
 		
 	}
 	
@@ -97,6 +115,37 @@ public class BaseFunc {
 		channel_btn.click();
 	}
 	
+	/**
+	 * 
+	 * @param functype 按弹出框从左到右从上到下依次1，2，3，4，5，6，
+	 */
+	public void enterSomeFunc(String functype){
+		WebElement bottombar = driver.findElement(by_bottombar);
+		WebElement plusbtn = bottombar.findElement(By.className("android.view.View"));
+		plusbtn.click();
+		String type = null;
+		type = functype;
+		switch (type) {
+		case "1":
+			driver.findElement(by_by_quickdubbing2).click();
+			break;
+		case "2":
+			driver.findElement(by_sourcelib).click();
+			break;
+		case "3":
+			driver.findElement(by_jqhylib).click();
+			break;
+		case "4":
+			driver.findElement(by_hzgc).click();
+			break;
+		case "5":
+			break;
+		case "6":
+			break;
+		default:
+			break;
+		}
+	}
 
 	/**
 	 * @author Jum
@@ -104,20 +153,25 @@ public class BaseFunc {
 	 * @Catalog 进入快速配音,无网情况下则进入已配缓存列表即可
 	 * @param type 网络情况，0为无网，1为有网
 	 */
-	public void enterQuickDubbing(int type){
-		WebElement quickbtn = driver.findElement(by_quickdubbing);
-		quickbtn.click();
+	public boolean enterQuickDubbing(int type){
+	//	WebElement quickbtn = driver.findElement(by_quickdubbing);
+	//	quickbtn.click();
 		if(type == 1){		
 			if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/action"),600000)){
 				SystemHelper.sleep(2);
 				pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
 				pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
 				pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
-				
+				return true;
 			}else{
 				System.out.println("enter dubbing failed.");
+				return false;
 			}
-		}			
+		}else{
+			System.out.println("type error");
+			return false;	
+		}
+				
 	}
 	
 

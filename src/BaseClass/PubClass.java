@@ -22,6 +22,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import Util.SystemHelper;
+
 import com.thoughtworks.selenium.Wait;
 
 import io.appium.java_client.TouchAction;
@@ -68,6 +70,26 @@ public class PubClass {
 		}catch(Exception e){
 			return false;
 		}
+	}
+	
+	/**
+	 * 
+	 * @param by
+	 * @param time
+	 * @return 在相应的时间内控件不存在则返回true
+	 */
+	public boolean waitUntilDisappear(By by,int time){
+		int times = 0;
+		while(this.isElementExist(by, 1)&&times<15){
+			SystemHelper.sleep(1);
+			times++;
+		}
+		if(!this.isElementExist(by, 1)){
+			return true;
+		}else{
+			return false;
+		}
+		
 	}
 	
 	/**
@@ -202,6 +224,54 @@ public class PubClass {
 			break;
 		}
 	}
+	
+	/**
+     * 滑向某个方向，知道找到某个元素
+     * @param direction 滑动方向 Up、Down、Left、Right
+     * @param duration 本次操作需要消耗的时间，时间越长，操作越慢
+     */
+	public void swipeToElement(By by, String direction, int duration){
+		int x = 0;
+		int y = 0;
+		int elWidth = appScreen()[0];
+		int elHeight = appScreen()[1];
+		int startx = 0,starty = 0 ,endx = 0,endy = 0;
+		switch(direction){
+		case"Up":
+			startx = x+elWidth*3/2;
+			endx = startx;
+			starty = y+elHeight*4/5;
+			endy = y+elHeight*1/5;
+			
+			break;
+		case "Down":
+			startx = x+elWidth*3/5;
+			endx = startx;
+			starty = y+elHeight*1/5;
+			endy = y+elHeight*4/5;
+		
+			break;
+		case "Left":
+			startx = x+elWidth*1/5;
+			starty = y+elHeight*3/5;
+			endx = y+elWidth*4/5;
+			endy = starty;
+			
+			break;
+		case "Right":
+			startx = x+elWidth*4/5;
+			starty = y+elHeight*3/5;
+			endx = y+elWidth*1/5;
+			endy = starty;
+			
+			break;
+		}
+		
+		while(!isElementExist(by, 2)){
+			driver.swipe(startx, starty, endx, endy, duration);
+		}
+	}
+	
 	
 	/**
      * This Method for swipe up
@@ -363,6 +433,11 @@ public class PubClass {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public int getrandom(int num){
+		int number=(int) (Math.random()*num);
+		return number;
 	}
 
 }
