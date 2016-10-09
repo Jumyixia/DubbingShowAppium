@@ -72,10 +72,13 @@ public class AppiumTest{
 	@Test(priority = 1)
 	public void Test1() throws InterruptedException, ParseException, IOException{
 		System.out.println("------------------start  test.");
-	
+		
 		basefunc.enterApp();
-		SystemHelper.sleep(1);
+		//SystemHelper.sleep(10);
 		 System.out.println("------------------start  test.");
+		pub.swipeToUp(500);
+		
+		
 //driver.findElementByName("Ö»¿´Â¥Ö÷").click();
 		//mescenter.SentMesTosb();
 		 circle.testCase01();

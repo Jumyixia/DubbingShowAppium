@@ -29,7 +29,7 @@ public class CirclePage {
 	private By by_circletab;
 	private By by_sourcelist;
 	private By by_roles;
-	private By by_circlelist;
+	private By by_circlecontainer;
 	private By by_circle;
 	private By by_posttitle;	
 	private By by_postlist;
@@ -38,7 +38,24 @@ public class CirclePage {
 
 	private By by_hotpost;
 
+	private By by_backbtn;
 	private By by_followpost_cl;
+
+	private By by_replycount;
+
+	private By by_gallery;
+
+	private By by_camera;
+
+	private By by_record;
+
+	private By by_movie;
+
+	private By by_content;
+
+	private By by_ok;
+
+	private By by_recordbtn;
 	
 	
 	
@@ -48,7 +65,7 @@ public class CirclePage {
 		this.guidetype = guidetype;
 		
 		by_circletab = By.id("com.happyteam.dubbingshow:id/circlesTab");	//首页圈子tab按钮
-		by_circlelist = By.id("com.happyteam.dubbingshow:id/load_more_list_view_container");	//圈子列表
+		by_circlecontainer = By.id("com.happyteam.dubbingshow:id/load_more_list_view_container");	//圈子列表
 		by_circle = By.id("com.happyteam.dubbingshow:id/item_circles_image");	//圈子列表的具体圈子项
 		
 		//圈子详情页列表
@@ -57,100 +74,184 @@ public class CirclePage {
 		by_postlist = By.id("com.happyteam.dubbingshow:id/circles_normal_articles_lv");
 		by_post_more = By.id("com.happyteam.dubbingshow:id/btn_article_more");	//帖子详情更多按钮
 		by_post_reply = By.id("com.happyteam.dubbingshow:id/relpyall");	//跟帖按钮
+		
+		//帖子详情页
+		by_backbtn = By.id("com.happyteam.dubbingshow:id/btnBack");	//帖子详情页返回按钮
 		by_followpost_cl = By.id("com.happyteam.dubbingshow:id/lc");	//跟帖的楼层
+		by_replycount = By.id("com.happyteam.dubbingshow:id/replycount");	//回复数量
+		
+		//进行跟帖页面
+		
+		by_content= By.id("com.happyteam.dubbingshow:id/content");	//写跟帖区域
+		by_gallery = By.id("com.happyteam.dubbingshow:id/gallery");	//相册
+		by_camera = By.id("com.happyteam.dubbingshow:id/camera");	//拍照
+		by_record = By.id("com.happyteam.dubbingshow:id/recorder");	//语言
+		by_recordbtn = By.id("com.happyteam.dubbingshow:id/btnRecord");	//录音按钮
+		by_movie = By.id("com.happyteam.dubbingshow:id/movie");	//视频
+		
+		
+		by_ok = By.id("com.happyteam.dubbingshow:id/btnRight");	//完成按钮
 	}
 	
 
 	/**
-	 * 
+	 * 从首页进入圈子，判断是否存在圈子
+	 * 从圈子页面进入圈子详情，通过判断是否存在帖子或是置顶帖来确定是否进入成功
 	 */
 	public void enterCircleDetailByRandom(){
 		WebElement circletab_btn = driver.findElement(by_circletab);
 		circletab_btn.click();
 		if(pub.isElementExist(by_circle, 5)){//判断是否进入圈子同时是否加载出圈子列表
-			WebElement circlelist = driver.findElement(by_circlelist);
-			List<WebElement> circles = circlelist.findElements(by_circle);
+			WebElement circlecontainer = driver.findElement(by_circlecontainer);
+			List<WebElement> circles = circlecontainer.findElements(by_circle);
 			int count = circles.size();
-			circles.get(pub.getrandom(count)).click();
-			
+			circles.get(pub.getrandom(count)).click();			
 
 			
 			//进入圈子详情
-			if(pub.isElementExist(by_posttitle, 10)){//判断是否存在帖子或者置顶帖子
-				WebElement postlist = driver.findElement(by_postlist);
-				List<WebElement> posts = circlelist.findElements(by_posttitle);
-				count = posts.size();
-				posts.get(pub.getrandom(count)).click();
-				
-				//进入帖子详情
-				if(pub.isElementExist(by_post_reply, 10)){
-					System.out.println("result_enterCircleDetailByRandom_pass : enter postdetail pass.");
-				} else {
-					System.out.println("result_enterCircleDetailByRandom_fail : enter postdetail failed.");
-				}
-			}else  if(pub.isElementExist(by_hotpost, 10)){
-				WebElement postlist = driver.findElement(by_postlist);
-				List<WebElement> hotposts = circlelist.findElements(by_hotpost);
-				count = hotposts.size();
-				hotposts.get(pub.getrandom(count)).click();
-
-				// 进入帖子详情
-				if (pub.isElementExist(by_post_reply, 10)) {
-					System.out.println("result_enterCircleDetailByRandom_pass : enter postdetail pass.");
-				} else {
-					System.out.println("result_enterCircleDetailByRandom_fail : enter postdetail failed.");
-				}
-			} else {
-
-				System.out.println("result_enterCircleDetailByRandom_fail : enter circledetail failed or no post.");
+			if(pub.isElementExist(by_posttitle, 10)||pub.isElementExist(by_hotpost, 10)){//判断是否存在帖子或者置顶帖子
+				System.out.println("result_enterCircleDetailByRandom_pass : enter circle success");
+			}  else {
+				System.out.println("result_enterCircleDetailByRandom_fail : no circle or load failed.");
 			}
-			
+
 		}else{
 			System.out.println("result_enterCircleDetailByRandom_fail : enter circle failed or no circle");
 		}
 		 
 	}
 	
+	public void enterFollowPostDetailByRandom(){
+		int count = 0;
+		WebElement postlist = driver.findElement(by_postlist);
+		if(pub.isElementExist(by_posttitle, 10)){
+			List<WebElement> posts = postlist.findElements(by_posttitle);
+			count = posts.size();
+			
+			//	System.out.println("wait");
+			//	SystemHelper.sleep(5);
+			posts.get(pub.getrandom(count)).click();		
+				
+			//帖子详情中
+			if(pub.isElementExist(by_post_reply, 10)){
+				System.out.println("result_enterFollowPostDetailByRandom_pass : enter postdetail pass.");
+			} else {
+				System.out.println("result_enterFollowPostDetailByRandom_fail : enter postdetail failed.");
+			} 
+		}else  if(pub.isElementExist(by_hotpost, 10)){
+				
+			List<WebElement> hotposts = postlist.findElements(by_hotpost);
+			count = hotposts.size();
+			hotposts.get(pub.getrandom(count)).click();
+		//  hotposts.get(pub.getrandom(0)).click();
 
-	public void ReplyPost(){
-		
+
+			// 帖子详情
+			if (pub.isElementExist(by_post_reply, 10)) {
+				System.out.println("result_enterFollowPostDetailByRandom_pass : enter postdetail pass.");
+			} else {
+				System.out.println("result_enterFollowPostDetailByRandom_fail : enter postdetail failed.");
+			}
+		} else {
+			System.out.println("result_enterFollowPostDetailByRandom_fail : enter circledetail failed or no post.");
+		}
+			
 	}
 	
-	//
-	public void FollowPostByDesc(){
-		//先计算出倒序看帖的位置
-		WebElement post_reply = driver.findElement(by_post_reply);
-		int x = pub.appScreen()[0]/2;
-		int y = pub.appScreen()[1] - post_reply.getSize().height*4;
-		
-		WebElement post_more = driver.findElement(by_post_more);
-		post_more.click();
-		SystemHelper.sleep(1);
-		pub.tab(x, y);
-		
-		//验证倒序看帖是否正确
-		SystemHelper.sleep(2);
-		pub.swipeToElement(by_followpost_cl, "Up", 500 );
-		List<WebElement> followpost_cls = driver.findElements(by_followpost_cl);
-		
-		if(followpost_cls.size()<=1){//获取两层及以上的跟帖
-			pub.swipeToUp(500);
-		}
-		if (Integer.parseInt(followpost_cls.get(0).getText().substring(0, 1)) > 
-			Integer.parseInt(followpost_cls.get(1).getText().substring(0, 1))) {//判断是否楼层1大于楼层2
-			System.out.println("result_FollowPostByDesc_pass : FollowPostByDesc pass.");
-		}else{
-			System.out.println("result_FollowPostByDesc_fail : FollowPostByDesc error occured.");
-		}
-	}
-
-
 	/**
 	 * 
 	 */
-	public void a() {
+	public void FollowPostByDesc(){
+		//判断是否有跟帖
+		WebElement replycount = driver.findElement(by_replycount);
+		String replycount_string = replycount.getText();
+		int replycount_int = Integer.parseInt(replycount_string.substring(2, replycount_string.length()-2));
+		System.out.println(replycount_int+"......");
+		
+		if(replycount_int > 1){
+			// 先计算出倒序看帖的位置
+			WebElement post_reply = driver.findElement(by_post_reply);
+			int x = pub.appScreen()[0] / 2;
+			int y = pub.appScreen()[1] - post_reply.getSize().height * 4;
+
+			WebElement post_more = driver.findElement(by_post_more);
+			post_more.click();
+			SystemHelper.sleep(1);
+			pub.tab(x, y);
+
+			// 验证倒序看帖是否正确
+			SystemHelper.sleep(2);
+			pub.swipeToElement(by_followpost_cl, "Up", 500);
+			List<WebElement> followpost_cls = driver.findElements(by_followpost_cl);
+
+			for (int n = 0; n < 10; n++) {
+				if (followpost_cls.size() > 1) {// 获取两层及以上的跟帖
+
+					String clfirst = followpost_cls.get(0).getText();
+					String clsecond = followpost_cls.get(1).getText();
+					System.out.println(Integer.parseInt(clfirst.substring(0,
+							clfirst.length() - 1)));
+
+					if (Integer.parseInt(clfirst.substring(0,clfirst.length() - 1)) > Integer.parseInt(clsecond
+							.substring(0, clsecond.length() - 1))) {// 判断是否楼层1大于楼层2
+						System.out.println("result_FollowPostByDesc_pass : FollowPostByDesc pass.");
+					} else {
+						System.out.println("result_FollowPostByDesc_fail : FollowPostByDesc error occured.");
+					}
+					break;
+				} else {
+					pub.swipeToUp(500);
+				}
+				if (n == 4) {
+					if (followpost_cls.size() == 1) {
+						System.out.println("result_FollowPostByDesc_fail : FollowPostByDesc cl = 2. try again");
+						driver.findElement(by_backbtn).click();
+						pub.swipeToUp(500);
+						enterFollowPostDetailByRandom();
+						FollowPostByDesc();
+					}
+					System.out.println("result_FollowPostByDesc_fail : FollowPostByDesc cl < 2.");
+				}
+			}
+		}else{
+			System.out.println("result_FollowPostByDesc_fail : FollowPostByDesc cl = 2. try again");
+			driver.findElement(by_backbtn).click();
+			pub.swipeToUp(500);
+			enterFollowPostDetailByRandom();
+			FollowPostByDesc();
+		}
+		
+	}
+
+	/**
+	 * @param comment_text
+	 * @param i
+	 * @param j
+	 * @param k
+	 * @param l
+	 */
+	public void CommentPost(String comment_text, int pic, int takepic, int k, int l) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	public void CommentTextPost(String text){
+		
+	}
+
+	public void CommentGalleryPost(String text) {
+
+	}
+
+	public void CommentCameraPost(String text) {
+
+	}
+
+	public void CommentRecordPost(String text) {
+
+	}
+
+	public void CommentMoviePost(String text) {
+
+	}
 }

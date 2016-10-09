@@ -152,7 +152,9 @@ public class Dubbing {
 		if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/btnSearch"),10)){//通过判断是否存在搜索按钮来判断是否进入素材库
 			pub.swipeToUp(500);
 			SystemHelper.sleep(1);
-			driver.findElement(by_source).click();
+			List<WebElement> sourcelist = driver.findElements(by_source);
+			int count = pub.getrandomWithoutZero(sourcelist.size());
+			sourcelist.get(count).click();
 			
 			if(srview.enterDubbing()){
 				//去掉引导页

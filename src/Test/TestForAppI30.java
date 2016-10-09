@@ -68,11 +68,12 @@ public class TestForAppI30{
 	 */
 	@Test(priority = 1)
 	public void Test1() throws InterruptedException, ParseException, IOException{
-		System.out.println("------------------start  test.");
-		for (int i = 0; i <5; i++) {			
+		basefunc.enterApp();
+		System.out.println("------------------start  test1.");
+		for (int i = 0; i <5; i++) {
 			pub.swipeToUp(500);
 			detailpage.viewFilmFromHome();
-
+			
 		}
 	}
 		
@@ -86,21 +87,21 @@ public class TestForAppI30{
 	}
 	
 
-	@Test(priority = 3,enabled = false)
+	@Test(priority = 3,enabled = true)
 	public void Test3() throws InterruptedException, ParseException, IOException{
 		System.out.println("------------------start  test3.");
 		dubbing.testCase07();
 		basefunc.EnterHome();
 	}
 	
-	@Test(priority = 4,enabled = false)
+	@Test(priority = 4,enabled = true)
 	public void Test4() throws InterruptedException, ParseException, IOException{
 		System.out.println("------------------start  test4.");
 		dubbing.testCase08();
 		basefunc.EnterHome();
 	}
 	
-	@Test(priority = 5,enabled = false)
+	@Test(priority = 5,enabled = true)
 	public void Test5() throws InterruptedException, ParseException, IOException{
 		System.out.println("------------------start  test5.");
 		

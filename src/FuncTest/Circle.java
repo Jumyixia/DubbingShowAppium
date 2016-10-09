@@ -43,12 +43,15 @@ public class Circle {
 	 * 在圈子详情上滑，然后随机选择一个帖子进入帖子详情
 	 * 在帖子详情设置为倒序看帖（需要验证倒序看帖是否正确？）
 	 * 进行跟帖操作
-	 * 一段文字、一个表情、一段语音
+	 * 一段文字、一段语音//不支持输入表情
 	 * 然后发送，然后回到跟帖详情
 	 * 然后一直返回到首页
 	 */
 	public void testCase01(){
+		String comment_text = "good. haha";	//不支持输入文字
 		circlepage.enterCircleDetailByRandom();
+		circlepage.enterFollowPostDetailByRandom();
 		circlepage.FollowPostByDesc();
+		circlepage.CommentPost(comment_text,0,0,1,0);
 	}
 }

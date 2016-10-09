@@ -357,12 +357,15 @@ public class DubbingPage {
 	}
 	
 	/**
-	 * @category 调节人生特效，均为50%
+	 * @category 调节人声特效，均为50%	 
 	 */
 	public void fx(){
 		
 		WebElement fx = driver.findElement(by_fx);
 		fx.click();
+		if(!pub.isElementExist(by_mix, 5)){
+			fx.click();
+		}
 		
 		WebElement mix = driver.findElement(by_mix);
 		WebElement roomsize = driver.findElement(by_roomsize);	
@@ -385,7 +388,7 @@ public class DubbingPage {
 		driver.findElement(by_pitch).click();
 		WebElement dubbingSeekbar = driver.findElement(By.id("com.happyteam.dubbingshow:id/pitchSeekbar"));
 		pub.swipeOnElement(dubbingSeekbar, "Down", 1000);
-		SystemHelper.sleep(5);
+		SystemHelper.sleep(8);
 	}
 	
 	public void bgvol(){

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<!-- verbose="2" 标识的就是记录的日志级别，共有0-10的级别，其中0表示无，10表示最详细 -->
+<!-- testNG默认情况下，会生产两种类型的测试报告HTML的和XML的，目录：Workspace/testng/test-output/Suite1/test12.html -->
+<suite name="Suite1" verbose="2"> 
+    <!--  
+        <parameter name="test2" value="Tank" />
+        <parameter name="test1" value="Xiao" />
+    <test name="test12">
+        <classes>
+            <class name="TankLearn2.Learn.ParameterizedTest1" />
+        </classes>
+    </test>
+    <test name="test1">
+         <classes>
+            <class name="TankLearn2.Learn.GroupTest" />
+        </classes>
+        <groups>
+      	  <run>
+      		  <include name="functiontest" />
+          </run>
+    </groups>
+    </test>
+  -->
+    
+    <!-- preserve-order="true"时，可以保证节点下面的方法是按顺序执行的 -->
+     <test name="TestForAppI30" preserve-order="true">
+        <classes>
+            <class name="Test.TestForAppI30">
+                <methods>
+                    <include name="Test1" />
+                    <!-- <include name="Test2" /> -->
+           			<!-- <include name="Test3" /> -->      
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

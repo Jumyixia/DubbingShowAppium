@@ -199,7 +199,7 @@ public class PubClass {
 		int startx,starty,endx,endy = 0;
 		switch(direction){
 		case"Up":
-			startx = x+elWidth*3/2;
+			startx = x+elWidth*2/3;
 			starty = y+elHeight*4/5;
 			endy = y+elHeight*1/5;
 			driver.swipe(startx, starty, startx, endy, duration);
@@ -238,36 +238,37 @@ public class PubClass {
 		int startx = 0,starty = 0 ,endx = 0,endy = 0;
 		switch(direction){
 		case"Up":
-			startx = x+elWidth*3/2;
+			startx = elWidth*2/3;
 			endx = startx;
-			starty = y+elHeight*4/5;
-			endy = y+elHeight*1/5;
+			starty = elHeight*4/5;
+			endy = elHeight*1/5;
 			
 			break;
 		case "Down":
-			startx = x+elWidth*3/5;
+			startx = elWidth*3/5;
 			endx = startx;
-			starty = y+elHeight*1/5;
-			endy = y+elHeight*4/5;
+			starty = elHeight*1/5;
+			endy = elHeight*4/5;
 		
 			break;
 		case "Left":
-			startx = x+elWidth*1/5;
-			starty = y+elHeight*3/5;
-			endx = y+elWidth*4/5;
+			startx = elWidth*1/5;
+			starty = elHeight*3/5;
+			endx = elWidth*4/5;
 			endy = starty;
 			
 			break;
 		case "Right":
-			startx = x+elWidth*4/5;
-			starty = y+elHeight*3/5;
-			endx = y+elWidth*1/5;
+			startx = elWidth*4/5;
+			starty = elHeight*3/5;
+			endx = elWidth*1/5;
 			endy = starty;
 			
 			break;
 		}
 		
 		while(!isElementExist(by, 2)){
+			System.out.println(startx+"-"+ starty+"-"+ endx+"-"+ endy);
 			driver.swipe(startx, starty, endx, endy, duration);
 		}
 	}
@@ -433,6 +434,14 @@ public class PubClass {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public int getrandomWithoutZero(int num){
+		int number=(int) (Math.random()*num);
+		if(number == 0)
+			return number+1;
+		else
+			return number;
 	}
 	
 	public int getrandom(int num){
