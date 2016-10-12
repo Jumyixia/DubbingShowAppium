@@ -21,6 +21,7 @@ import BaseClass.DubbingPage;
 import BaseClass.PubClass;
 import BaseClass.ScreenCut;
 import BaseClass.VideoDetailPage;
+import FuncTest.Circle;
 import FuncTest.Dubbing;
 import FuncTest.Login;
 import FuncTest.MesCenter;
@@ -44,6 +45,7 @@ public class TestForAppI30{
 	public PubClass pub = null;
 	public ScreenCut scut = null;
 	public DetailPage detailpage = null;
+	public Circle circle = null;
 	
 	@BeforeClass
 	public void setUp() throws Exception{
@@ -57,6 +59,7 @@ public class TestForAppI30{
 		pub = new PubClass(driver);
 		scut = new ScreenCut(driver);
 		detailpage = new DetailPage(driver, 0);
+		circle = new Circle(driver, 0);
 		scut.start();
 		//mem.content = "deleteshiping";
 		//mem.start();//开始读取手机的cpu和内存	
@@ -73,7 +76,7 @@ public class TestForAppI30{
 		for (int i = 0; i <5; i++) {
 			pub.swipeToUp(500);
 			detailpage.viewFilmFromHome();
-			
+			basefunc.EnterHome();
 		}
 	}
 		
@@ -83,7 +86,6 @@ public class TestForAppI30{
 		dubbing.testCase06();
 		basefunc.EnterHome();
 		
- 
 	}
 	
 
@@ -104,8 +106,8 @@ public class TestForAppI30{
 	@Test(priority = 5,enabled = true)
 	public void Test5() throws InterruptedException, ParseException, IOException{
 		System.out.println("------------------start  test5.");
-		
-
+		 circle.testCase01();
+		 basefunc.EnterHome();
 	}
 	
 	

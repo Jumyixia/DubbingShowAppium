@@ -139,6 +139,24 @@ public class PubClass {
 		}
 	}
 	
+
+	/**
+     * This Method for swipe down
+     * @param x 表示 以元素的左上角为基准横向第几份
+     * @param y 表示 以元素的左上角为基准纵向第几份
+     * @param part 横纵向上分别分成几份
+     */
+	public void tapOnElement(WebElement el,int x,int y,int part){
+		int elx = el.getLocation().getX();
+		int ely = el.getLocation().getY();
+		int elWidth = el.getSize().getWidth();
+		int elHeight = el.getSize().getHeight();
+		int tapx = elx + elWidth*x/part;
+		int tapy = ely + elHeight*y/part;
+		this.tab(tapx, tapy);
+	}
+	
+	
 	//以el为目标，从还有一个点移动到该目标上
 	public void moveTo(WebElement el){
 		
@@ -170,20 +188,13 @@ public class PubClass {
 		}
 	}
 	
-	/**
-     * This Method for swipe down
-     * @param x 表示 以元素的左上角为基准横向第几份
-     * @param y 表示 以元素的左上角为基准纵向第几份
-     * @param part 横纵向上分别分成几份
-     */
-	public void tapOnElement(WebElement el,int x,int y,int part){
-		int elx = el.getLocation().getX();
-		int ely = el.getLocation().getY();
-		int elWidth = el.getSize().getWidth();
-		int elHeight = el.getSize().getHeight();
-		int tapx = elx + elWidth*x/part;
-		int tapy = ely + elHeight*y/part;
-		this.tab(tapx, tapy);
+	public void longPress(WebElement el,int duration){
+		try{
+			TouchAction ta = new TouchAction(this.driver);
+			ta.longPress(el,duration).perform();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	/**

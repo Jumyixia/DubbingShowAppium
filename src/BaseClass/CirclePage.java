@@ -56,6 +56,10 @@ public class CirclePage {
 	private By by_ok;
 
 	private By by_recordbtn;
+
+	private By by_replypostbtn;
+
+	private By by_subbtn;
 	
 	
 	
@@ -79,18 +83,18 @@ public class CirclePage {
 		by_backbtn = By.id("com.happyteam.dubbingshow:id/btnBack");	//帖子详情页返回按钮
 		by_followpost_cl = By.id("com.happyteam.dubbingshow:id/lc");	//跟帖的楼层
 		by_replycount = By.id("com.happyteam.dubbingshow:id/replycount");	//回复数量
+		by_replypostbtn = By.id("com.happyteam.dubbingshow:id/relpyall");	//回复主贴按钮
 		
-		//进行跟帖页面
-		
+		//进行跟帖页面		
 		by_content= By.id("com.happyteam.dubbingshow:id/content");	//写跟帖区域
 		by_gallery = By.id("com.happyteam.dubbingshow:id/gallery");	//相册
 		by_camera = By.id("com.happyteam.dubbingshow:id/camera");	//拍照
 		by_record = By.id("com.happyteam.dubbingshow:id/recorder");	//语言
 		by_recordbtn = By.id("com.happyteam.dubbingshow:id/btnRecord");	//录音按钮
 		by_movie = By.id("com.happyteam.dubbingshow:id/movie");	//视频
-		
-		
+				
 		by_ok = By.id("com.happyteam.dubbingshow:id/btnRight");	//完成按钮
+		by_subbtn = By.id("com.happyteam.dubbingshow:id/btnSubmit");	//弹窗上右边的按钮（重试、确定）
 	}
 	
 
@@ -165,8 +169,10 @@ public class CirclePage {
 		//判断是否有跟帖
 		WebElement replycount = driver.findElement(by_replycount);
 		String replycount_string = replycount.getText();
+		if(replycount_string != null){
 		int replycount_int = Integer.parseInt(replycount_string.substring(2, replycount_string.length()-2));
 		System.out.println(replycount_int+"......");
+		
 		
 		if(replycount_int > 1){
 			// 先计算出倒序看帖的位置
@@ -220,6 +226,9 @@ public class CirclePage {
 			enterFollowPostDetailByRandom();
 			FollowPostByDesc();
 		}
+		}else {
+			System.out.println("result_FollowPostByDesc_fail : network error");
+		}
 		
 	}
 
@@ -235,23 +244,71 @@ public class CirclePage {
 		
 	}
 
+	/**
+	 * 跟帖文字内容
+	 * 该操作会导致清空输入框，所以需要先执行输入文字操作，再执行语音、拍照等操作
+	 * @param text	需要输入的字符，暂不考虑中文
+	 */
 	public void CommentTextPost(String text){
+		WebElement contentarea = driver.findElement(by_content);
+		contentarea.click();
+		contentarea.sendKeys(text);
+	}
+
+	public void CommentGalleryPost() {
+
+	}
+
+	public void CommentCameraPost() {
 		
 	}
 
-	public void CommentGalleryPost(String text) {
-
-	}
-
-	public void CommentCameraPost(String text) {
-
-	}
-
-	public void CommentRecordPost(String text) {
-
+	/**
+	 * 
+	 * @param duration 本次录音的时长，秒为单位
+	 */
+	public void CommentRecordPost(int duration) {
+		driver.findElement(by_record).click();
+		WebElement record_btn = driver.findElement(by_recordbtn);
+		pub.longPress(record_btn,duration*1000);
 	}
 
 	public void CommentMoviePost(String text) {
 
+	}
+	
+	
+	public boolean SubComment(){
+		WebElement contentarea = driver.findElement(by_content);
+		WebElement sub_btn = driver.findElement(by_ok);
+		if(!contentarea.getText().equals("写跟帖...")){
+			sub_btn.click();
+			if(pub.isElementExist(by_subbtn, 20)){
+				driver.findElement(by_subbtn).click();
+				
+				//循环判断是否还会上传失败
+				for(int i = 0; i < 5; i++){					
+					if(pub.isElementExist(by_replypostbtn, 5)){
+						System.out.println("result_SubComment_pass ：sub success");
+						return true;
+					}else if(pub.isElementExist(by_subbtn, 5)){
+						driver.findElement(by_subbtn).click();
+					}	
+				}
+				//跳出循环且没有return true 则说明提交失败
+				System.out.println("result_SubComment_fail : sub error. network unconnect.");
+				return false;
+				
+			}else if(pub.isElementExist(by_subbtn, 20)){
+				System.out.println("result_SubComment_pass ：sub success");
+				return true;				
+			}
+			
+		}else {
+			System.out.println("result_SubComment_fail : no content.");
+			return false;
+		}
+		return false;
+		
 	}
 }

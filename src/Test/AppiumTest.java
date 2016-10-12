@@ -74,16 +74,11 @@ public class AppiumTest{
 		System.out.println("------------------start  test.");
 		
 		basefunc.enterApp();
-		//SystemHelper.sleep(10);
-		 System.out.println("------------------start  test.");
+	//	SystemHelper.sleep(15);
+		System.out.println("------------------start  test.");
 		pub.swipeToUp(500);
-		
-		
-//driver.findElementByName("Ö»¿´Â¥Ö÷").click();
-		//mescenter.SentMesTosb();
-		 circle.testCase01();
-		 
-		
+	//	circle.testCase01();
+		dubbing.testCase06();
 	}
 		
 	@Test(priority = 2, enabled = false)

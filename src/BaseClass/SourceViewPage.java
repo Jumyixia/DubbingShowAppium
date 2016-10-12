@@ -57,6 +57,7 @@ public class SourceViewPage {
 		String tag = dubbingcount_text.getText();
 		
 		dubbingbtn.click();
+		
 		if(tag.contains("≈‰“Ù")){
 			if (pub.isElementExist(By.id("com.happyteam.dubbingshow:id/action"), 600000)) {
 				SystemHelper.sleep(2);

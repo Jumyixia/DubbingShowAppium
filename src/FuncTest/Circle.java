@@ -27,6 +27,8 @@ public class Circle {
 	public CirclePage circlepage = null;
 	public int guidetype = 1; //提示tips是否存在1为存在，0不存在
 	private By by_source;
+	private By by_backbtn;
+	private By by_homebtn;
 	
 	public Circle(AndroidDriver driver,int guidetype){
 		this.driver = driver;
@@ -36,6 +38,8 @@ public class Circle {
 		circlepage = new CirclePage(driver, guidetype);
 		
 		by_source = By.id("com.happyteam.dubbingshow:id/container");	//素材库一个素材项
+		by_backbtn = By.id("com.happyteam.dubbingshow:id/btnBack");	//返回按钮
+		by_homebtn = By.id("com.happyteam.dubbingshow:id/dubbingTab");	//首页按钮
 	}
 	
 	/**
@@ -52,6 +56,12 @@ public class Circle {
 		circlepage.enterCircleDetailByRandom();
 		circlepage.enterFollowPostDetailByRandom();
 		circlepage.FollowPostByDesc();
-		circlepage.CommentPost(comment_text,0,0,1,0);
+		circlepage.CommentMoviePost(comment_text);
+		circlepage.CommentRecordPost(13);
+		if(circlepage.SubComment()){
+			driver.findElement(by_backbtn).click();	//帖子详情
+			driver.findElement(by_backbtn).click();	//圈子详情
+			driver.findElement(by_source).click();	//首页
+		}
 	}
 }

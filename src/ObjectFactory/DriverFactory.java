@@ -68,17 +68,14 @@ public class DriverFactory {
 	public static AndroidDriver getAppiumDriver() {
 		System.out.println("getAppiumDriver");
 		String port = null;
-		if (appiumDriver == null) {
-			//System.out.println("judge os");			
-			//String cmdPath = "E:/AndroidFiles/Appium/node_modules/.bin/appium.cmd -p 4723";
-			//String cmdPath = "E:/AndroidFile/Appium/node_modules/.bin/appium.cmd -p 4723";
-			try {
-				Runtime.getRuntime().exec("cmd /c start " + str.cmdPath);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
+//		if (appiumDriver == null) {
+//			try {
+//				Runtime.getRuntime().exec("cmd /c start " + str.cmdPath);
+//			} catch (IOException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//		}
 		SystemHelper.sleep(10);
 
 		DesiredCapabilities capabilities = new DesiredCapabilities();
