@@ -35,6 +35,7 @@ public class BaseFunc {
 	public int guidetype = 1; //提示tips是否存在1为存在，0不存在
 
 	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+	private By by_qwpy;
 
 	public BaseFunc(AndroidDriver driver, int guidetype){
 		this.driver = driver;
@@ -45,12 +46,15 @@ public class BaseFunc {
 		by_view = By.className("android.widget.ImageView");
 		by_quickdubbing = By.id("com.happyteam.dubbingshow:id/iv_fast");	//快速配音
 		 //+号页按钮
-		by_by_quickdubbing2 = By.id("com.happyteam.dubbingshow:id/qwpy_view");
-		by_sourcelib = By.id("com.happyteam.dubbingshow:id/sc_view");
-		by_jqhylib = By.id("com.happyteam.dubbingshow:id/jqhy_view");
-		
+		by_by_quickdubbing2 = By.id("com.happyteam.dubbingshow:id/sc_view");
+		//by_sourcelib = By.id("com.happyteam.dubbingshow:id/sc_view");
+		//by_jqhylib = By.id("com.happyteam.dubbingshow:id/jqhy_view");
+		by_uploadsource = By.id("com.happyteam.dubbingshow:id/hzgc_view");
+		by_uploadfilm = By.id("com.happyteam.dubbingshow:id/upload_st_view");
 		by_dubbing = By.id("com.happyteam.dubbingshow:id/dubbing");	//素材库页面的配音按钮
 		by_bottombar = By.id("com.happyteam.dubbingshow:id/layoutBottom");	//首页底端的bar
+		
+		by_qwpy = By.id("com.happyteam.dubbingshow:id/btnPeiyin");	//素材库的趣味配音
 	}
 	
 	
@@ -92,20 +96,22 @@ public class BaseFunc {
 		System.out.println("BackToHome");
 		if(!pub.isElementExist(By.name("热门"), 2)){
 			pub.extcmd("adb shell am force-stop " + str.packagename);
-			pub.extcmd("adb shell am start -n " + str.packagename +" / "+ str.startactivity);
+			SystemHelper.sleep(1);
+			//pub.extcmd("adb shell am start -n " + str.packagename +" / "+ str.startactivity);
+			driver.startActivity(str.packagename, str.startactivity);
 			SystemHelper.sleep(2);
 		}
 		
 		
 	}
 	
-	//进入首页四个模块中的一个
-	public void enterFeature(String feature){
-		System.out.println("-----------enterFeature");
-		driver.manage().timeouts().implicitlyWait(20,  TimeUnit.SECONDS);
-		WebElement feature_btn = driver.findElementByName(feature);
-		feature_btn.click();		
-	}
+//	//进入首页四个模块中的一个
+//	public void enterFeature(String feature){
+//		System.out.println("-----------enterFeature");
+//		driver.manage().timeouts().implicitlyWait(20,  TimeUnit.SECONDS);
+//		WebElement feature_btn = driver.findElementByName(feature);
+//		feature_btn.click();		
+//	}
 	
 	//进入具体的频道
 	public void enterChannel(String channel){
@@ -130,13 +136,13 @@ public class BaseFunc {
 			driver.findElement(by_by_quickdubbing2).click();
 			break;
 		case "2":
-			driver.findElement(by_sourcelib).click();
+			driver.findElement(by_hzgc).click();
 			break;
 		case "3":
-			driver.findElement(by_jqhylib).click();
+			driver.findElement(by_uploadsource).click();
 			break;
 		case "4":
-			driver.findElement(by_hzgc).click();
+			driver.findElement(by_uploadfilm).click();
 			break;
 		case "5":
 			break;
@@ -153,32 +159,29 @@ public class BaseFunc {
 	 * @Catalog 进入快速配音,无网情况下则进入已配缓存列表即可
 	 * @param type 网络情况，0为无网，1为有网
 	 */
-	public boolean enterQuickDubbing(int type){
-	//	WebElement quickbtn = driver.findElement(by_quickdubbing);
-	//	quickbtn.click();
-		if(type == 1){		
-			if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/action"),600000)){
-				SystemHelper.sleep(2);
-				pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
-				pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
-				pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]*1/4);
-				return true;
-			}else{
-				System.out.println("enter dubbing failed.");
-				return false;
-			}
-		}else{
-			System.out.println("type error");
-			return false;	
+	public boolean enterQuickDubbing(){
+		WebElement quickbtn = driver.findElement(by_qwpy);
+		quickbtn.click();
+			
+		if (pub.isElementExist(By.id("com.happyteam.dubbingshow:id/action"),
+				600000)) {
+			SystemHelper.sleep(2);
+			pub.tab(pub.appScreen()[0] / 2, pub.appScreen()[1] * 1 / 4);
+			pub.tab(pub.appScreen()[0] / 2, pub.appScreen()[1] * 1 / 4);
+			pub.tab(pub.appScreen()[0] / 2, pub.appScreen()[1] * 1 / 4);
+			return true;
+		} else {
+			System.out.println("enter dubbing failed.");
+			return false;
 		}
-				
+
 	}
 	
 
 	public void enterVideoDetail() throws InterruptedException{
 		System.out.println("-----------enterVideoDetail");
 		driver.manage().timeouts().implicitlyWait(20,  TimeUnit.SECONDS);
-		WebElement filmimg = driver.findElementById("com.happyteam.dubbingshow:id/filmimg");
+		WebElement filmimg = driver.findElementById("com.happyteam.dubbingshow:id/film_common_container");
 		filmimg.click();
 		SystemHelper.sleep(2);
 	}

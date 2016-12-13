@@ -178,7 +178,7 @@ public class CirclePage {
 			// 先计算出倒序看帖的位置
 			WebElement post_reply = driver.findElement(by_post_reply);
 			int x = pub.appScreen()[0] / 2;
-			int y = pub.appScreen()[1] - post_reply.getSize().height * 4;
+			int y = pub.appScreen()[1] - post_reply.getSize().height * 5;
 
 			WebElement post_more = driver.findElement(by_post_more);
 			post_more.click();
@@ -233,15 +233,21 @@ public class CirclePage {
 	}
 
 	/**
+	 * 实现comment_text , duration两个字段方式，支持添加文字和语音
+	 * 输入内容后不需要点击提交按钮
 	 * @param comment_text
-	 * @param i
-	 * @param j
-	 * @param k
+	 * @param pic
+	 * @param takepic
+	 * @param duration  语音时长
 	 * @param l
 	 */
-	public void CommentPost(String comment_text, int pic, int takepic, int k, int l) {
+	public void CommentPost(String comment_text, int pic, int takepic, int duration, int l) {
 		// TODO Auto-generated method stub
-		
+		WebElement btn_post_reply = driver.findElement(by_post_reply);
+		btn_post_reply.click();
+		CommentTextPost(comment_text);
+		CommentRecordPost(duration);
+
 	}
 
 	/**
@@ -283,7 +289,7 @@ public class CirclePage {
 		WebElement sub_btn = driver.findElement(by_ok);
 		if(!contentarea.getText().equals("写跟帖...")){
 			sub_btn.click();
-			if(pub.isElementExist(by_subbtn, 20)){
+			if(pub.isElementExist(by_subbtn, 6)){
 				driver.findElement(by_subbtn).click();
 				
 				//循环判断是否还会上传失败
@@ -299,7 +305,7 @@ public class CirclePage {
 				System.out.println("result_SubComment_fail : sub error. network unconnect.");
 				return false;
 				
-			}else if(pub.isElementExist(by_subbtn, 20)){
+			}else if(!pub.isElementExist(by_subbtn, 6)){
 				System.out.println("result_SubComment_pass ：sub success");
 				return true;				
 			}

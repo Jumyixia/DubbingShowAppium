@@ -101,8 +101,10 @@ public class UploadPage {
 	public void Upload(){
 		WebElement uploadbtn = driver.findElement(by_uploadbtn);
 		uploadbtn.click();
+		WebElement submit = driver.findElement(by_btnSubmit);
+		submit.click();
 		if(pub.isElementExist(by_btnSubmit, 600000)){
-			WebElement submit = driver.findElement(by_btnSubmit);
+			submit = driver.findElement(by_btnSubmit);
 			submit.click();
 		}
 	}

@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import ObjectFactory.DriverFactory;
+import Util.DriverFactory;
 import Util.SystemHelper;
 import io.appium.java_client.android.AndroidDriver;
 

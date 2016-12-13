@@ -15,7 +15,8 @@ import BaseClass.PubClass;
 import BaseClass.SourceViewPage;
 import BaseClass.UploadPage;
 import BaseClass.VideoDetailPage;
-import ObjectFactory.DriverFactory;
+import Util.DriverFactory;
+import Util.Console;
 import Util.SystemHelper;
 import io.appium.java_client.android.AndroidDriver;
 
@@ -25,6 +26,7 @@ public class Circle {
 	public PubClass pub = null;
 	public VideoDetailPage videodetailpage = null;
 	public CirclePage circlepage = null;
+	public Console cs = null;
 	public int guidetype = 1; //提示tips是否存在1为存在，0不存在
 	private By by_source;
 	private By by_backbtn;
@@ -40,6 +42,7 @@ public class Circle {
 		by_source = By.id("com.happyteam.dubbingshow:id/container");	//素材库一个素材项
 		by_backbtn = By.id("com.happyteam.dubbingshow:id/btnBack");	//返回按钮
 		by_homebtn = By.id("com.happyteam.dubbingshow:id/dubbingTab");	//首页按钮
+		cs = new Console();
 	}
 	
 	/**
@@ -55,13 +58,27 @@ public class Circle {
 		String comment_text = "good. haha";	//不支持输入文字
 		circlepage.enterCircleDetailByRandom();
 		circlepage.enterFollowPostDetailByRandom();
-		circlepage.FollowPostByDesc();
-		circlepage.CommentMoviePost(comment_text);
-		circlepage.CommentRecordPost(13);
+		circlepage.CommentPost(comment_text,0,0,2,0);
+		cs.errorLog("circle 01");
 		if(circlepage.SubComment()){
+			System.out.println("circle 01---back");
 			driver.findElement(by_backbtn).click();	//帖子详情
 			driver.findElement(by_backbtn).click();	//圈子详情
-			driver.findElement(by_source).click();	//首页
+			driver.findElement(by_homebtn).click();	//首页
+		}else{
+		cs.errorLog("circle 01----fail");
 		}
+	}
+	
+	public void testCase02(){
+		cs.errorLog("circle 02");
+		circlepage.enterCircleDetailByRandom();
+		circlepage.enterFollowPostDetailByRandom();
+		circlepage.FollowPostByDesc();
+		cs.errorLog("circle 02 --");
+		driver.findElement(by_backbtn).click();	//帖子详情
+		driver.findElement(by_backbtn).click();	//圈子详情
+		driver.findElement(by_homebtn).click();	//首页
+		
 	}
 }

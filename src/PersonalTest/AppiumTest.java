@@ -21,7 +21,7 @@ import BaseClass.BaseFunc;
 import BaseClass.DubbingPage;
 import BaseClass.VideoDetailPage;
 import FuncTest.Dubbing;
-import ObjectFactory.DriverFactory;
+import Util.DriverFactory;
 import Util.SystemHelper;
 import Util.Console;
 import io.appium.java_client.android.AndroidDriver;

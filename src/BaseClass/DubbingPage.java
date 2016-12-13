@@ -144,7 +144,8 @@ public class DubbingPage {
 		switch (set) {
 		case 1:
 			if(!headset.isSelected()){
-				headset.click();				
+				headset.click();
+				driver.findElement(By.id("com.happyteam.dubbingshow:id/btnSubmit")).click();
 			}
 			break;
 		case 0:
@@ -490,10 +491,7 @@ public class DubbingPage {
 			
 			long time = end-start;
 			log = log + ",using:," + time/1000;
-			//·µ»Øµ½Ê×Ò³
-			driver.manage().timeouts().implicitlyWait(20,  TimeUnit.SECONDS);
-			WebElement back =  driver.findElement(by_btnback);
-			back.click();
+
 			System.out.println(log);
 			pub.WriteinFile(log, "time.txt");
 			

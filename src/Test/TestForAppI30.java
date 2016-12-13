@@ -25,7 +25,7 @@ import FuncTest.Circle;
 import FuncTest.Dubbing;
 import FuncTest.Login;
 import FuncTest.MesCenter;
-import ObjectFactory.DriverFactory;
+import Util.DriverFactory;
 import Util.SystemHelper;
 import Util.Console;
 import io.appium.java_client.android.AndroidDriver;

@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import ObjectFactory.DriverFactory;
+import Util.DriverFactory;
 import Util.SystemHelper;
 
 import io.appium.java_client.android.AndroidDriver;
@@ -36,11 +36,13 @@ video_detail_praise点赞按钮
 	//进入配音
 	public void Dubbing() throws InterruptedException{
 		System.out.println("-----------enter dubbing");
+		pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]/5);
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		WebElement dubbing_btn = driver.findElementById("com.happyteam.dubbingshow:id/btn_video_detail_dubbing");
 		dubbing_btn.click();
 		if(pub.isElementExist(By.id("com.happyteam.dubbingshow:id/action"),600000)){
 			SystemHelper.sleep(2);
-			pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]/2);
+			pub.tab(pub.appScreen()[0]/2,pub.appScreen()[1]/5);
 		}else{
 			System.out.println("enter dubbing failed.");
 		}		
